@@ -7,12 +7,14 @@ import java.awt.geom.Rectangle2D;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
+import uk.me.dillingham.thematicmap.attributes.Record;
 import uk.me.dillingham.thematicmap.projections.Projection;
 
 public class Polygon implements Feature
 {
     private int recNumber;
     private Path2D.Float path;
+    private Record record;
 
     public Polygon(int recNumber)
     {
@@ -74,5 +76,15 @@ public class Polygon implements Feature
     public Rectangle2D getBounds()
     {
         return path.getBounds2D();
+    }
+
+    public Record getRecord()
+    {
+        return record;
+    }
+
+    public void setRecord(Record record)
+    {
+        this.record = record;
     }
 }

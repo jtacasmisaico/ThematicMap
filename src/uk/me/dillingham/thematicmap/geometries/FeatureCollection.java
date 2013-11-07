@@ -6,11 +6,13 @@ import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
+import uk.me.dillingham.thematicmap.attributes.Record;
 import uk.me.dillingham.thematicmap.projections.Projection;
 
 public class FeatureCollection implements Feature, PConstants
 {
     private List<Feature> features;
+    private Record record;
 
     public FeatureCollection()
     {
@@ -48,5 +50,15 @@ public class FeatureCollection implements Feature, PConstants
         }
 
         return new Rectangle2D.Float(xMin, yMin, xMax - xMin, yMax - yMin);
+    }
+
+    public Record getRecord()
+    {
+        return record;
+    }
+
+    public void setRecord(Record record)
+    {
+        this.record = record;
     }
 }
