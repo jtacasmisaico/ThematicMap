@@ -42,6 +42,17 @@ public class ThematicMap
 
     public void draw()
     {
+        draw(0, 0);
+    }
+
+    public void draw(float x, float y)
+    {
+        p.pushMatrix();
+
+        p.translate(x, y);
+
         featureCollection.draw(p, projection);
+
+        p.popMatrix();
     }
 }
