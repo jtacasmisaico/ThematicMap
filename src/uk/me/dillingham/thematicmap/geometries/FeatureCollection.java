@@ -61,4 +61,14 @@ public class FeatureCollection implements Feature, PConstants
     {
         this.record = record;
     }
+
+    public List<Feature> getFeatures()
+    {
+        return features;
+    }
+
+    public void setFeatures(List<Feature> features)
+    {
+        this.features = features;
+    }
 }
