@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import uk.me.dillingham.thematicmap.geometries.Feature;
-import uk.me.dillingham.thematicmap.geometries.FeatureCollection;
 import uk.me.dillingham.thematicmap.geometries.Polygon;
 
 public class ShpFileReader
@@ -22,7 +21,7 @@ public class ShpFileReader
         throw new AssertionError();
     }
 
-    public static FeatureCollection read(File shpFile)
+    public static List<Feature> read(File shpFile)
     {
         List<Feature> features = new ArrayList<Feature>();
 
@@ -135,6 +134,6 @@ public class ShpFileReader
             e.printStackTrace();
         }
 
-        return new FeatureCollection(features);
+        return features;
     }
 }

@@ -4,17 +4,38 @@ import java.awt.geom.Rectangle2D;
 
 import processing.core.PVector;
 
-public interface Projection
+public abstract class Projection
 {
-    public PVector geoToScreen(PVector geo);
+    private Rectangle2D geoBounds, screenBounds;
 
-    public PVector screenToGeo(PVector screen);
+    protected Projection()
+    {
+        geoBounds = new Rectangle2D.Float();
 
-    public Rectangle2D getGeoBounds();
+        screenBounds = new Rectangle2D.Float();
+    }
 
-    public void setGeoBounds(Rectangle2D geoBounds);
+    public Rectangle2D getGeoBounds()
+    {
+        return geoBounds;
+    }
 
-    public Rectangle2D getScreenBounds();
+    public void setGeoBounds(Rectangle2D geoBounds)
+    {
+        this.geoBounds = geoBounds;
+    }
 
-    public void setScreenBounds(Rectangle2D screenBounds);
+    public Rectangle2D getScreenBounds()
+    {
+        return screenBounds;
+    }
+
+    public void setScreenBounds(Rectangle2D screenBounds)
+    {
+        this.screenBounds = screenBounds;
+    }
+
+    public abstract PVector geoToScreen(PVector geo);
+
+    public abstract PVector screenToGeo(PVector screen);
 }

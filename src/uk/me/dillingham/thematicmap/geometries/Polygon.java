@@ -7,18 +7,15 @@ import java.awt.geom.Rectangle2D;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
-import uk.me.dillingham.thematicmap.attributes.Record;
 import uk.me.dillingham.thematicmap.projections.Projection;
 
-public class Polygon implements Feature
+public class Polygon extends Feature
 {
-    private int recNumber;
     private Path2D.Float path;
-    private Record record;
 
-    public Polygon(int recNumber)
+    public Polygon(int recordNumber)
     {
-        this.recNumber = recNumber;
+        super(recordNumber);
 
         path = new Path2D.Float();
     }
@@ -38,15 +35,19 @@ public class Polygon implements Feature
         }
         else
         {
-            System.err.println("Cannot add part to polygon " + recNumber);
+            System.err.println("Cannot add part to polygon " + getRecordNumber());
         }
     }
 
-    public void draw(PApplet p, Projection projection)
+    public void draw(PApplet p, Projection projection, float x, float y)
     {
         PathIterator iterator = path.getPathIterator(null);
 
         float[] geo = new float[6];
+
+        p.pushMatrix();
+
+        p.translate(x, y);
 
         while (!iterator.isDone())
         {
@@ -71,20 +72,12 @@ public class Polygon implements Feature
 
             iterator.next();
         }
+
+        p.popMatrix();
     }
 
-    public Rectangle2D getBounds()
+    public Rectangle2D getGeoBounds()
     {
         return path.getBounds2D();
-    }
-
-    public Record getRecord()
-    {
-        return record;
-    }
-
-    public void setRecord(Record record)
-    {
-        this.record = record;
     }
 }

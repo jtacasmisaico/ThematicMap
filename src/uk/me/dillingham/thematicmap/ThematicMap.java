@@ -1,71 +1,50 @@
 package uk.me.dillingham.thematicmap;
 
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import processing.core.PApplet;
-import processing.core.PVector;
-import uk.me.dillingham.thematicmap.attributes.Record;
+import uk.me.dillingham.thematicmap.components.Drawable;
 import uk.me.dillingham.thematicmap.geometries.Feature;
-import uk.me.dillingham.thematicmap.geometries.FeatureCollection;
 import uk.me.dillingham.thematicmap.io.ShpFileReader;
 import uk.me.dillingham.thematicmap.projections.Projection;
 
-public class ThematicMap
+public class ThematicMap implements Drawable
 {
-    private PApplet p;
-    private Projection projection;
-    private FeatureCollection featureCollection;
+    private Map<Integer, Feature> featureByRecordNumber;
 
-    public ThematicMap(PApplet p, Projection projection)
+    public ThematicMap()
     {
-        this.p = p;
-
-        this.projection = projection;
-
-        featureCollection = new FeatureCollection();
-    }
-
-    public PVector geoToScreen(PVector geo)
-    {
-        return projection.geoToScreen(geo);
-    }
-
-    public PVector screenToGeo(PVector screen)
-    {
-        return projection.screenToGeo(screen);
+        featureByRecordNumber = new LinkedHashMap<Integer, Feature>();
     }
 
     public void read(String file)
     {
         file = "data" + File.separator + file;
 
-        featureCollection = ShpFileReader.read(new File(file));
-    }
-
-    public void draw()
-    {
-        draw(0, 0);
-    }
-
-    public void setRecords(List<Record> records)
-    {
-        List<Feature> features = featureCollection.getFeatures();
-
-        for (int i = 0; i < features.size(); i++)
+        for (Feature feature : ShpFileReader.read(new File(file)))
         {
-            features.get(i).setRecord(records.get(i));
+            featureByRecordNumber.put(feature.getRecordNumber(), feature);
         }
     }
 
-    public void draw(float x, float y)
+    public void draw(PApplet p, Projection projection, float x, float y)
     {
-        p.pushMatrix();
+        for (Feature feature : featureByRecordNumber.values())
+        {
+            feature.draw(p, projection, x, y);
+        }
+    }
 
-        p.translate(x, y);
+    public Feature getFeature(int recordNumber)
+    {
+        return featureByRecordNumber.get(recordNumber);
+    }
 
-        featureCollection.draw(p, projection);
-
-        p.popMatrix();
+    public Collection<Feature> getFeatures()
+    {
+        return featureByRecordNumber.values();
     }
 }
