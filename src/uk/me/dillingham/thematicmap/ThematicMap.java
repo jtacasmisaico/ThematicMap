@@ -1,8 +1,11 @@
 package uk.me.dillingham.thematicmap;
 
+import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import processing.core.PApplet;
@@ -46,5 +49,19 @@ public class ThematicMap implements Drawable
     public Collection<Feature> getFeatures()
     {
         return featureByRecordNumber.values();
+    }
+
+    public Rectangle2D getGeoBounds()
+    {
+        List<Feature> features = new ArrayList<Feature>(featureByRecordNumber.values());
+
+        Rectangle2D geoBounds = features.get(0).getGeoBounds();
+
+        for (Feature feature : features)
+        {
+            geoBounds.add(feature.getGeoBounds());
+        }
+
+        return geoBounds;
     }
 }
