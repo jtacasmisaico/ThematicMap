@@ -2,13 +2,13 @@ package uk.me.dillingham.thematicmap;
 
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import processing.core.PApplet;
+import processing.data.Table;
 import uk.me.dillingham.thematicmap.components.Drawable;
 import uk.me.dillingham.thematicmap.geometries.Feature;
 import uk.me.dillingham.thematicmap.io.ShpFileReader;
@@ -16,11 +16,14 @@ import uk.me.dillingham.thematicmap.projections.Projection;
 
 public class ThematicMap implements Drawable
 {
-    private Map<Integer, Feature> featureByRecordNumber;
+    private List<Feature> features;
+    private Table attributeTable;
 
     public ThematicMap()
     {
-        featureByRecordNumber = new LinkedHashMap<Integer, Feature>();
+        features = new ArrayList<Feature>();
+
+        attributeTable = new Table();
     }
 
     public void read(String file)
@@ -29,16 +32,34 @@ public class ThematicMap implements Drawable
 
         if (shpFile.exists())
         {
-            for (Feature feature : ShpFileReader.read(shpFile))
+            try
             {
-                featureByRecordNumber.put(feature.getRecordNumber(), feature);
+                features = ShpFileReader.read(shpFile);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        File csvFile = new File("data" + File.separator + file.replaceFirst(".shp", ".csv"));
+
+        if (csvFile.exists())
+        {
+            try
+            {
+                attributeTable = new Table(csvFile, "header");
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
             }
         }
     }
 
     public void draw(PApplet p, Projection projection, float x, float y)
     {
-        for (Feature feature : featureByRecordNumber.values())
+        for (Feature feature : features)
         {
             feature.draw(p, projection, x, y);
         }
@@ -46,18 +67,21 @@ public class ThematicMap implements Drawable
 
     public Feature getFeature(int recordNumber)
     {
-        return featureByRecordNumber.get(recordNumber);
+        return features.get(recordNumber);
     }
 
     public Collection<Feature> getFeatures()
     {
-        return featureByRecordNumber.values();
+        return new ArrayList<Feature>(features);
+    }
+
+    public Table getAttributeTable()
+    {
+        return attributeTable;
     }
 
     public Rectangle2D getGeoBounds()
     {
-        List<Feature> features = new ArrayList<Feature>(featureByRecordNumber.values());
-
         Rectangle2D geoBounds = features.get(0).getGeoBounds();
 
         for (Feature feature : features)
