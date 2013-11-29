@@ -2,7 +2,6 @@ package uk.me.dillingham.thematicmap.io;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -21,118 +20,107 @@ public class ShpFileReader
         throw new AssertionError();
     }
 
-    public static List<Feature> read(File shpFile)
+    public static List<Feature> read(File shpFile) throws IOException
     {
         List<Feature> features = new ArrayList<Feature>();
 
-        try
+        InputStream shp = new FileInputStream(shpFile);
+
+        // File header
+
+        ByteBuffer fileHeader = ByteBuffer.allocate(100);
+
+        shp.read(fileHeader.array());
+
+        int fileLength = fileHeader.getInt(24);
+
+        // Record
+
+        int position = 100;
+
+        while (position < fileLength)
         {
-            InputStream shp = new FileInputStream(shpFile);
+            // Record header
 
-            // File header
+            ByteBuffer recHeader = ByteBuffer.allocate(8);
 
-            ByteBuffer fileHeader = ByteBuffer.allocate(100);
+            shp.read(recHeader.array());
 
-            shp.read(fileHeader.array());
+            int recNumber = recHeader.getInt(); // Starts at 1
 
-            int fileLength = fileHeader.getInt(24);
+            int recLength = recHeader.getInt();
 
-            // Record
+            // Record content
 
-            int position = 100;
+            ByteBuffer recContent = ByteBuffer.allocate(recLength * 2);
 
-            while (position < fileLength)
+            shp.read(recContent.array());
+
+            recContent.order(ByteOrder.LITTLE_ENDIAN);
+
+            int shapeType = recContent.getInt();
+
+            if (shapeType == 5)
             {
-                // Record header
+                // Polygon
 
-                ByteBuffer recHeader = ByteBuffer.allocate(8);
+                float xMin = (float) recContent.getDouble();
+                float yMin = (float) recContent.getDouble();
+                float xMax = (float) recContent.getDouble();
+                float yMax = (float) recContent.getDouble();
 
-                shp.read(recHeader.array());
+                int numParts = recContent.getInt();
 
-                int recNumber = recHeader.getInt(); // Starts at 1
+                int numPoints = recContent.getInt();
 
-                int recLength = recHeader.getInt();
+                int[] parts = new int[numParts];
 
-                // Record content
+                float[] x = new float[numPoints];
+                float[] y = new float[numPoints];
 
-                ByteBuffer recContent = ByteBuffer.allocate(recLength * 2);
-
-                shp.read(recContent.array());
-
-                recContent.order(ByteOrder.LITTLE_ENDIAN);
-
-                int shapeType = recContent.getInt();
-
-                if (shapeType == 5)
+                for (int i = 0; i < numParts; i++)
                 {
-                    // Polygon
-
-                    float xMin = (float) recContent.getDouble();
-                    float yMin = (float) recContent.getDouble();
-                    float xMax = (float) recContent.getDouble();
-                    float yMax = (float) recContent.getDouble();
-
-                    int numParts = recContent.getInt();
-
-                    int numPoints = recContent.getInt();
-
-                    int[] parts = new int[numParts];
-
-                    float[] x = new float[numPoints];
-                    float[] y = new float[numPoints];
-
-                    for (int i = 0; i < numParts; i++)
-                    {
-                        parts[i] = recContent.getInt();
-                    }
-
-                    for (int i = 0; i < numPoints; i++)
-                    {
-                        x[i] = (float) recContent.getDouble();
-                        y[i] = (float) recContent.getDouble();
-                    }
-
-                    Polygon polygon = new Polygon(recNumber - 1); // Starts at 0
-
-                    for (int i = 0; i < numParts; i++)
-                    {
-                        int from = parts[i];
-
-                        int to;
-
-                        if (i + 1 < numParts)
-                        {
-                            to = parts[i + 1];
-                        }
-                        else
-                        {
-                            to = numPoints;
-                        }
-
-                        float[] x0 = Arrays.copyOfRange(x, from, to);
-                        float[] y0 = Arrays.copyOfRange(y, from, to);
-
-                        polygon.addPart(x0, y0);
-                    }
-
-                    features.add(polygon);
+                    parts[i] = recContent.getInt();
                 }
 
-                // Increment position
+                for (int i = 0; i < numPoints; i++)
+                {
+                    x[i] = (float) recContent.getDouble();
+                    y[i] = (float) recContent.getDouble();
+                }
 
-                position += 4 + recLength;
+                Polygon polygon = new Polygon(recNumber - 1); // Starts at 0
+
+                for (int i = 0; i < numParts; i++)
+                {
+                    int from = parts[i];
+
+                    int to;
+
+                    if (i + 1 < numParts)
+                    {
+                        to = parts[i + 1];
+                    }
+                    else
+                    {
+                        to = numPoints;
+                    }
+
+                    float[] x0 = Arrays.copyOfRange(x, from, to);
+                    float[] y0 = Arrays.copyOfRange(y, from, to);
+
+                    polygon.addPart(x0, y0);
+                }
+
+                features.add(polygon);
             }
 
-            shp.close();
+            // Increment position
+
+            position += 4 + recLength;
         }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+
+        shp.close();
 
         return features;
     }
