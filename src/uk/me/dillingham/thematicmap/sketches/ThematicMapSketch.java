@@ -29,6 +29,8 @@ public class ThematicMapSketch extends PApplet
         textAlign(LEFT, TOP);
 
         textFont(createFont("SourceSansPro-Regular", 12));
+
+        println(thematicMap.getAttributeTable().getString(168, 3)); // USA
     }
 
     public void draw()
@@ -48,6 +50,12 @@ public class ThematicMapSketch extends PApplet
         strokeWeight((float) 0.5);
 
         thematicMap.draw(this, projection, 0, 0);
+
+        // Draw highlighted feature
+
+        fill(color(128));
+
+        thematicMap.getFeature(168).draw(this, projection, 0, 0); // USA
 
         // Draw border
 
