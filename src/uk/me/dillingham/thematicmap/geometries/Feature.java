@@ -3,27 +3,19 @@ package uk.me.dillingham.thematicmap.geometries;
 import java.awt.geom.Rectangle2D;
 
 import uk.me.dillingham.thematicmap.components.Drawable;
-import uk.me.dillingham.thematicmap.components.Record;
 
-public abstract class Feature extends Record implements Drawable
+public abstract class Feature implements Drawable
 {
-    private Record attributes;
+    private final int recordNumber;
 
     protected Feature(int recordNumber)
     {
-        super(recordNumber);
-
-        attributes = null;
+        this.recordNumber = recordNumber;
     }
 
-    public Record getAttributes()
+    public int getRecordNumber()
     {
-        return attributes;
-    }
-
-    public void setAttributes(Record attributes)
-    {
-        this.attributes = attributes;
+        return recordNumber;
     }
 
     public abstract Rectangle2D getGeoBounds();
