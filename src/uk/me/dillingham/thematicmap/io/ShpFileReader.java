@@ -49,7 +49,7 @@ public class ShpFileReader
 
                 shp.read(recHeader.array());
 
-                int recNumber = recHeader.getInt();
+                int recNumber = recHeader.getInt(); // Starts at 1
 
                 int recLength = recHeader.getInt();
 
@@ -92,7 +92,7 @@ public class ShpFileReader
                         y[i] = (float) recContent.getDouble();
                     }
 
-                    Polygon polygon = new Polygon(recNumber);
+                    Polygon polygon = new Polygon(recNumber - 1); // Starts at 0
 
                     for (int i = 0; i < numParts; i++)
                     {
