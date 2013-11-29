@@ -25,11 +25,14 @@ public class ThematicMap implements Drawable
 
     public void read(String file)
     {
-        file = "data" + File.separator + file;
+        File shpFile = new File("data" + File.separator + file);
 
-        for (Feature feature : ShpFileReader.read(new File(file)))
+        if (shpFile.exists())
         {
-            featureByRecordNumber.put(feature.getRecordNumber(), feature);
+            for (Feature feature : ShpFileReader.read(shpFile))
+            {
+                featureByRecordNumber.put(feature.getRecordNumber(), feature);
+            }
         }
     }
 
