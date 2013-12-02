@@ -35,6 +35,16 @@ public abstract class Projection
         this.screenBounds = screenBounds;
     }
 
+    public int getScreenWidth()
+    {
+        return (int) screenBounds.getWidth();
+    }
+
+    public int getScreenHeight()
+    {
+        return (int) screenBounds.getHeight();
+    }
+
     public abstract PVector geoToScreen(PVector geo);
 
     public abstract PVector screenToGeo(PVector screen);
