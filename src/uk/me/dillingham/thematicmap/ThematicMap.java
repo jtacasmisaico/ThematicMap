@@ -70,6 +70,13 @@ public class ThematicMap implements Drawable
         return features.get(recordNumber);
     }
 
+    public Feature getFeature(String value, int column)
+    {
+        int recordNumber = attributeTable.findRowIndex(value, column);
+
+        return features.get(recordNumber);
+    }
+
     public Collection<Feature> getFeatures()
     {
         return new ArrayList<Feature>(features);
