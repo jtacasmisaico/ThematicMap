@@ -7,15 +7,15 @@ import java.awt.geom.Rectangle2D;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
-import uk.me.dillingham.thematicmap.projections.Projection;
+import uk.me.dillingham.thematicmap.ThematicMap;
 
 public class Polygon extends Feature
 {
     private Path2D.Float path;
 
-    public Polygon(int recordNumber)
+    public Polygon(int recordNumber, PApplet p)
     {
-        super(recordNumber);
+        super(recordNumber, p);
 
         path = new Path2D.Float();
     }
@@ -39,15 +39,11 @@ public class Polygon extends Feature
         }
     }
 
-    public void draw(PApplet p, Projection projection, float x, float y)
+    public void draw(ThematicMap thematicMap)
     {
         PathIterator iterator = path.getPathIterator(null);
 
         float[] geo = new float[6];
-
-        p.pushMatrix();
-
-        p.translate(x, y);
 
         while (!iterator.isDone())
         {
@@ -55,25 +51,23 @@ public class Polygon extends Feature
 
             if (segmentType == PathIterator.SEG_MOVETO)
             {
-                p.beginShape();
+                getParent().beginShape();
             }
 
             if (segmentType == PathIterator.SEG_MOVETO || segmentType == PathIterator.SEG_LINETO)
             {
-                PVector screen = projection.geoToScreen(new PVector(geo[0], geo[1]));
+                PVector screen = thematicMap.geoToScreen(new PVector(geo[0], geo[1]));
 
-                p.vertex(screen.x, screen.y);
+                getParent().vertex(screen.x, screen.y);
             }
 
             if (segmentType == PathIterator.SEG_CLOSE)
             {
-                p.endShape(PConstants.CLOSE);
+                getParent().endShape(PConstants.CLOSE);
             }
 
             iterator.next();
         }
-
-        p.popMatrix();
     }
 
     public Rectangle2D getGeoBounds()

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import processing.core.PApplet;
 import uk.me.dillingham.thematicmap.geometries.Feature;
 import uk.me.dillingham.thematicmap.geometries.Polygon;
 
@@ -20,7 +21,7 @@ public class ShpFileReader
         throw new AssertionError();
     }
 
-    public static List<Feature> read(File shpFile) throws IOException
+    public static List<Feature> read(File shpFile, PApplet p) throws IOException
     {
         List<Feature> features = new ArrayList<Feature>();
 
@@ -89,7 +90,7 @@ public class ShpFileReader
                     y[i] = (float) recContent.getDouble();
                 }
 
-                Polygon polygon = new Polygon(recNumber - 1); // Starts at 0
+                Polygon polygon = new Polygon(recNumber - 1, p); // Starts at 0
 
                 for (int i = 0; i < numParts; i++)
                 {

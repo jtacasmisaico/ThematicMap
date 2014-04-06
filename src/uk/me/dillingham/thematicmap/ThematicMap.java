@@ -8,33 +8,45 @@ import java.util.Collection;
 import java.util.List;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 import processing.data.Table;
-import uk.me.dillingham.thematicmap.components.Drawable;
 import uk.me.dillingham.thematicmap.geometries.Feature;
 import uk.me.dillingham.thematicmap.io.ShpFileReader;
-import uk.me.dillingham.thematicmap.projections.Projection;
 
-public class ThematicMap implements Drawable
+public class ThematicMap
 {
     private List<Feature> features;
     private Table attributeTable;
+    private Rectangle2D geoBounds, screenBounds;
+    private PApplet p;
 
-    public ThematicMap()
+    public ThematicMap(PApplet p)
+    {
+        this(0, 0, p.width, p.height, p);
+    }
+
+    public ThematicMap(float x, float y, float width, float height, PApplet p)
     {
         features = new ArrayList<Feature>();
 
         attributeTable = new Table();
+
+        geoBounds = new Rectangle2D.Float();
+
+        screenBounds = new Rectangle2D.Float(x, y, width, height);
+
+        this.p = p;
     }
 
     public void read(String file)
     {
-        File shpFile = new File("data" + File.separator + file);
+        File shpFile = new File("data" + File.separator + file + ".shp");
 
         if (shpFile.exists())
         {
             try
             {
-                features = ShpFileReader.read(shpFile);
+                features = ShpFileReader.read(shpFile, p);
             }
             catch (IOException e)
             {
@@ -42,7 +54,7 @@ public class ThematicMap implements Drawable
             }
         }
 
-        File csvFile = new File("data" + File.separator + file.replaceFirst(".shp", ".csv"));
+        File csvFile = new File("data" + File.separator + file + ".csv");
 
         if (csvFile.exists())
         {
@@ -55,14 +67,38 @@ public class ThematicMap implements Drawable
                 e.printStackTrace();
             }
         }
+
+        geoBounds = features.get(0).getGeoBounds();
+
+        for (Feature feature : features)
+        {
+            geoBounds.add(feature.getGeoBounds());
+        }
     }
 
-    public void draw(PApplet p, Projection projection, float x, float y)
+    public void draw()
     {
         for (Feature feature : features)
         {
-            feature.draw(p, projection, x, y);
+            feature.draw(this);
         }
+    }
+
+    public void draw(int recordNumber)
+    {
+        features.get(recordNumber).draw(this);
+    }
+
+    public void draw(String value, int column)
+    {
+        int recordNumber = attributeTable.findRowIndex(value, column);
+
+        draw(recordNumber);
+    }
+
+    public Collection<Feature> getFeatures()
+    {
+        return new ArrayList<Feature>(features);
     }
 
     public Feature getFeature(int recordNumber)
@@ -74,12 +110,29 @@ public class ThematicMap implements Drawable
     {
         int recordNumber = attributeTable.findRowIndex(value, column);
 
-        return features.get(recordNumber);
+        return getFeature(recordNumber);
     }
 
-    public Collection<Feature> getFeatures()
+    public PVector geoToScreen(PVector geo)
     {
-        return new ArrayList<Feature>(features);
+        float screenX = PApplet.map(geo.x, (float) geoBounds.getMinX(), (float) geoBounds.getMaxX(),
+                (float) screenBounds.getMinX(), (float) screenBounds.getMaxX());
+
+        float screenY = PApplet.map(geo.y, (float) geoBounds.getMinY(), (float) geoBounds.getMaxY(),
+                (float) screenBounds.getMaxY(), (float) screenBounds.getMinY());
+
+        return new PVector(screenX, screenY);
+    }
+
+    public PVector screenToGeo(PVector screen)
+    {
+        float geoX = PApplet.map(screen.x, (float) screenBounds.getMinX(), (float) screenBounds.getMaxX(),
+                (float) geoBounds.getMinX(), (float) geoBounds.getMaxX());
+
+        float geoY = PApplet.map(screen.y, (float) screenBounds.getMinY(), (float) screenBounds.getMaxY(),
+                (float) geoBounds.getMaxY(), (float) geoBounds.getMinY());
+
+        return new PVector(geoX, geoY);
     }
 
     public Table getAttributeTable()
@@ -87,15 +140,28 @@ public class ThematicMap implements Drawable
         return attributeTable;
     }
 
+    public void setAttributeTable(Table attributeTable)
+    {
+        this.attributeTable = attributeTable;
+    }
+
     public Rectangle2D getGeoBounds()
     {
-        Rectangle2D geoBounds = features.get(0).getGeoBounds();
-
-        for (Feature feature : features)
-        {
-            geoBounds.add(feature.getGeoBounds());
-        }
-
         return geoBounds;
+    }
+
+    public void setGeoBounds(Rectangle2D geoBounds)
+    {
+        this.geoBounds = geoBounds;
+    }
+
+    public Rectangle2D getScreenBounds()
+    {
+        return screenBounds;
+    }
+
+    public void setScreenBounds(Rectangle2D screenBounds)
+    {
+        this.screenBounds = screenBounds;
     }
 }
