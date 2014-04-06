@@ -12,6 +12,7 @@ import java.util.List;
 
 import processing.core.PApplet;
 import uk.me.dillingham.thematicmap.Feature;
+import uk.me.dillingham.thematicmap.Point;
 import uk.me.dillingham.thematicmap.Polygon;
 
 public class ShpFileReader
@@ -60,6 +61,21 @@ public class ShpFileReader
             recContent.order(ByteOrder.LITTLE_ENDIAN);
 
             int shapeType = recContent.getInt();
+
+            if (shapeType == 1)
+            {
+                // Point
+
+                float x = (float) recContent.getDouble();
+                float y = (float) recContent.getDouble();
+
+                Point point = new Point(recNumber - 1, p);
+
+                point.setX(x);
+                point.setY(y);
+
+                features.add(point);
+            }
 
             if (shapeType == 5)
             {
