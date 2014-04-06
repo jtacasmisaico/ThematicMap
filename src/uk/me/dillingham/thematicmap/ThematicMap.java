@@ -20,18 +20,13 @@ public class ThematicMap
 
     public ThematicMap(PApplet p)
     {
-        this(0, 0, p.width, p.height, p);
-    }
-
-    public ThematicMap(float x, float y, float width, float height, PApplet p)
-    {
         features = new ArrayList<Feature>();
 
         attributeTable = new Table();
 
         geoBounds = null;
 
-        screenBounds = new Rectangle2D.Float(x, y, width, height);
+        screenBounds = null;
 
         this.p = p;
     }
@@ -74,6 +69,11 @@ public class ThematicMap
             {
                 geoBounds.add(feature.getGeoBounds());
             }
+        }
+
+        if (screenBounds == null)
+        {
+            screenBounds = new Rectangle2D.Float(0, 0, p.width, p.height);
         }
     }
 
