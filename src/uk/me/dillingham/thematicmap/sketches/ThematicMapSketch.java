@@ -1,6 +1,5 @@
 package uk.me.dillingham.thematicmap.sketches;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 
@@ -17,11 +16,13 @@ public class ThematicMapSketch extends PApplet
     {
         size(740, 380);
 
-        thematicMap = new ThematicMap(10, 10, 720, 360, this);
+        thematicMap = new ThematicMap(this);
 
         thematicMap.read("ne_110m_admin_0_countries_lakes" + File.separator + "ne_110m_admin_0_countries_lakes");
 
         thematicMap.setGeoBounds(new Rectangle2D.Float(-180, -90, 360, 180));
+
+        thematicMap.setScreenBounds(new Rectangle2D.Float(10, 10, 720, 360));
 
         textAlign(LEFT, TOP);
 
@@ -74,7 +75,7 @@ public class ThematicMapSketch extends PApplet
 
         // Draw text
 
-        if (screenBounds.contains(new Point2D.Float(mouseX, mouseY)))
+        if (screenBounds.contains(mouseX, mouseY))
         {
             PVector geo = thematicMap.screenToGeo(new PVector(mouseX, mouseY));
 

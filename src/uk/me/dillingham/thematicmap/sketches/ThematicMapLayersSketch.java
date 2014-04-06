@@ -1,6 +1,5 @@
 package uk.me.dillingham.thematicmap.sketches;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 
@@ -83,7 +82,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         // Draw text
 
-        if (screenBounds.contains(new Point2D.Float(mouseX, mouseY)))
+        if (screenBounds.contains(mouseX, mouseY))
         {
             int recordNumber = countriesLakes.getRecordNumber(new PVector(mouseX, mouseY));
 
