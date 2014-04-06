@@ -1,9 +1,11 @@
 package uk.me.dillingham.thematicmap.sketches;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 import uk.me.dillingham.thematicmap.ThematicMap;
 
 @SuppressWarnings("serial")
@@ -78,6 +80,22 @@ public class ThematicMapLayersSketch extends PApplet
         float minY = (float) screenBounds.getMinY();
 
         rect(minX, minY, (float) screenBounds.getWidth(), (float) screenBounds.getHeight()); // Border
+
+        // Draw text
+
+        if (screenBounds.contains(new Point2D.Float(mouseX, mouseY)))
+        {
+            int recordNumber = countriesLakes.getRecordNumber(new PVector(mouseX, mouseY));
+
+            if (recordNumber > -1)
+            {
+                noStroke();
+
+                fill(128);
+
+                text(countriesLakes.getAttributeTable().getString(recordNumber, 3), minX + 2, minY);
+            }
+        }
 
         noLoop();
     }
