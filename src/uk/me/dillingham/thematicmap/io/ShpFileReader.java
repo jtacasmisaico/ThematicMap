@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import processing.core.PApplet;
-import uk.me.dillingham.thematicmap.geometries.Feature;
-import uk.me.dillingham.thematicmap.geometries.Polygon;
+import uk.me.dillingham.thematicmap.Feature;
+import uk.me.dillingham.thematicmap.Polygon;
 
 public class ShpFileReader
 {

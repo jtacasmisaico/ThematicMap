@@ -10,7 +10,6 @@ import java.util.List;
 import processing.core.PApplet;
 import processing.core.PVector;
 import processing.data.Table;
-import uk.me.dillingham.thematicmap.geometries.Feature;
 import uk.me.dillingham.thematicmap.io.ShpFileReader;
 
 public class ThematicMap
