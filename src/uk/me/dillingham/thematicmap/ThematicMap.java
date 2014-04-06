@@ -30,7 +30,7 @@ public class ThematicMap
 
         attributeTable = new Table();
 
-        geoBounds = new Rectangle2D.Float();
+        geoBounds = null;
 
         screenBounds = new Rectangle2D.Float(x, y, width, height);
 
@@ -67,11 +67,14 @@ public class ThematicMap
             }
         }
 
-        geoBounds = features.get(0).getGeoBounds();
-
-        for (Feature feature : features)
+        if (geoBounds == null)
         {
-            geoBounds.add(feature.getGeoBounds());
+            geoBounds = features.get(0).getGeoBounds();
+
+            for (Feature feature : features)
+            {
+                geoBounds.add(feature.getGeoBounds());
+            }
         }
     }
 
