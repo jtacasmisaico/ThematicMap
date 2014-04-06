@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import processing.core.PApplet;
@@ -91,28 +90,24 @@ public class ThematicMap
         features.get(recordNumber).draw(this);
     }
 
-    public void draw(String value, int column)
+    public int getRecordNumber(PVector screen)
     {
-        int recordNumber = attributeTable.findRowIndex(value, column);
+        PVector geo = screenToGeo(screen);
 
-        draw(recordNumber);
-    }
+        for (Feature feature : features)
+        {
+            if (feature.getClass() == Polygon.class)
+            {
+                Polygon polygon = (Polygon) feature;
 
-    public Collection<Feature> getFeatures()
-    {
-        return new ArrayList<Feature>(features);
-    }
+                if (polygon.contains(geo.x, geo.y))
+                {
+                    return polygon.getRecordNumber();
+                }
+            }
+        }
 
-    public Feature getFeature(int recordNumber)
-    {
-        return features.get(recordNumber);
-    }
-
-    public Feature getFeature(String value, int column)
-    {
-        int recordNumber = attributeTable.findRowIndex(value, column);
-
-        return getFeature(recordNumber);
+        return -1;
     }
 
     public PVector geoToScreen(PVector geo)
