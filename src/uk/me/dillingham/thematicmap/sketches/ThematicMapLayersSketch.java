@@ -15,17 +15,29 @@ public class ThematicMapLayersSketch extends PApplet
     {
         size(740, 380);
 
-        countriesLakes = new ThematicMap(10, 10, 720, 360, this);
+        Rectangle2D.Float geoBounds = new Rectangle2D.Float(-180, -90, 360, 180);
+
+        Rectangle2D.Float screenBounds = new Rectangle2D.Float(10, 10, 720, 360);
+
+        // Initialise map
+
+        countriesLakes = new ThematicMap(this);
+
+        countriesLakes.setGeoBounds(geoBounds);
+
+        countriesLakes.setScreenBounds(screenBounds);
 
         countriesLakes.read("ne_110m_admin_0_countries_lakes" + File.separator + "ne_110m_admin_0_countries_lakes");
 
-        countriesLakes.setGeoBounds(new Rectangle2D.Float(-180, -90, 360, 180));
+        // Initialise map
 
-        populatedPlaces = new ThematicMap(10, 10, 720, 360, this);
+        populatedPlaces = new ThematicMap(this);
+
+        populatedPlaces.setGeoBounds(geoBounds);
+
+        populatedPlaces.setScreenBounds(screenBounds);
 
         populatedPlaces.read("ne_110m_populated_places" + File.separator + "ne_110m_populated_places");
-
-        populatedPlaces.setGeoBounds(new Rectangle2D.Float(-180, -90, 360, 180));
 
         textAlign(LEFT, TOP);
 
