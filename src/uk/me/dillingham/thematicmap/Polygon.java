@@ -73,4 +73,9 @@ public class Polygon extends Feature
     {
         return path.getBounds2D();
     }
+
+    public boolean contains(float x, float y)
+    {
+        return path.contains(x, y);
+    }
 }
