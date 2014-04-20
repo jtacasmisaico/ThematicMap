@@ -91,7 +91,10 @@ public class ThematicMap
     }
 
     /**
-     * Draws the thematic map.
+     * Draws the thematic map. If the bounds of the thematic map in geographic coordinates and in screen coordinates
+     * have not been set by {@link #setGeoBounds(Rectangle2D)} and {@link #setScreenBounds(Rectangle2D)}, the geographic
+     * bounds will be those of the features read from the shapefile and the screen bounds will be those of the parent
+     * sketch.
      */
     public void draw()
     {
@@ -102,7 +105,10 @@ public class ThematicMap
     }
 
     /**
-     * Draws the feature with the given record number. Record numbers are zero-indexed.
+     * Draws the feature with the given record number. Record numbers are zero-indexed. If the bounds of the thematic
+     * map in geographic coordinates and in screen coordinates have not been set by {@link #setGeoBounds(Rectangle2D)}
+     * and {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be those of the features read from the
+     * shapefile and the screen bounds will be those of the parent sketch.
      * @param recordNumber The record number. Record numbers are zero-indexed.
      */
     public void draw(int recordNumber)
