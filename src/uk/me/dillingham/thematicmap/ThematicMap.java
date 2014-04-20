@@ -12,7 +12,7 @@ import processing.data.Table;
 import uk.me.dillingham.thematicmap.io.ShpFileReader;
 
 /**
- * Class for drawing thematic maps in Processing.
+ * Class to draw a thematic map in Processing.
  * @author Iain Dillingham
  */
 public class ThematicMap
