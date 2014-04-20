@@ -48,10 +48,4 @@ public abstract class Feature
      * @param thematicMap The thematic map.
      */
     public abstract void draw(ThematicMap thematicMap);
-
-    /**
-     * Gets the bounds of the feature in geographic coordinates.
-     * @return The bounds of the feature in geographic coordinates.
-     */
-    public abstract Rectangle2D getGeoBounds();
 }
