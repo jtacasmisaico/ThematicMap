@@ -52,4 +52,12 @@ public abstract class Feature
      * @return The type of the feature.
      */
     public abstract FeatureType getFeatureType();
+
+    /**
+     * Tests whether the given point is contained by the feature.
+     * @param x The x coordinate of the point.
+     * @param y The y coordinate of the point.
+     * @return True if the given point is contained by the feature.
+     */
+    public abstract boolean contains(float x, float y);
 }

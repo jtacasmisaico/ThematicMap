@@ -28,6 +28,11 @@ public class Point extends Feature
         return FeatureType.POINT;
     }
 
+    public boolean contains(float x, float y)
+    {
+        return (this.x == x && this.y == y);
+    }
+
     public float getX()
     {
         return x;
