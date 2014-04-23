@@ -1,5 +1,7 @@
 package uk.me.dillingham.thematicmap;
 
+import java.awt.geom.Rectangle2D;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -26,6 +28,11 @@ public class Point extends Feature
     public FeatureType getFeatureType()
     {
         return FeatureType.POINT;
+    }
+
+    public Rectangle2D getBounds()
+    {
+        return new Rectangle2D.Float(x, y, 0, 0);
     }
 
     public boolean contains(float x, float y)

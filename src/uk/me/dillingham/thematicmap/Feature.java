@@ -1,5 +1,7 @@
 package uk.me.dillingham.thematicmap;
 
+import java.awt.geom.Rectangle2D;
+
 import processing.core.PApplet;
 
 /**
@@ -52,6 +54,12 @@ public abstract class Feature
      * @return The type of the feature.
      */
     public abstract FeatureType getFeatureType();
+
+    /**
+     * Gets the bounds of the feature.
+     * @return The bounds of the feature.
+     */
+    public abstract Rectangle2D getBounds();
 
     /**
      * Tests whether the given point is contained by the feature.
