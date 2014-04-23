@@ -76,14 +76,11 @@ public class ThematicMap
 
         if (geoBounds == null)
         {
-            if (features.get(0).getFeatureType() == FeatureType.POLYGON) // TODO: Add points and lines
-            {
-                geoBounds = ((Polygon) features.get(0)).getGeoBounds();
+            geoBounds = features.get(0).getBounds();
 
-                for (Feature feature : features)
-                {
-                    geoBounds.add(((Polygon) feature).getGeoBounds());
-                }
+            for (Feature feature : features)
+            {
+                geoBounds.add(feature.getBounds());
             }
         }
 
