@@ -1,7 +1,5 @@
 package uk.me.dillingham.thematicmap;
 
-import java.awt.geom.Rectangle2D;
-
 import processing.core.PApplet;
 
 /**
