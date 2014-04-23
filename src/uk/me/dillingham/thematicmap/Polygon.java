@@ -8,10 +8,19 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
 
+/**
+ * Class to draw a geographic polygon in Processing.
+ * @author Iain Dillingham
+ */
 public class Polygon extends Feature
 {
     private Path2D.Float path;
 
+    /**
+     * Constructs a geographic polygon with the given record number within the given parent sketch.
+     * @param recordNumber The record number.
+     * @param p The parent sketch.
+     */
     public Polygon(int recordNumber, PApplet p)
     {
         super(recordNumber, p);
@@ -19,6 +28,11 @@ public class Polygon extends Feature
         path = new Path2D.Float();
     }
 
+    /**
+     * Adds a part to the polygon.
+     * @param x The x coordinates of the part.
+     * @param y The y coordinates of the part.
+     */
     public void addPart(float[] x, float[] y)
     {
         if (x.length == y.length)
