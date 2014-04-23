@@ -132,24 +132,9 @@ public class ThematicMap
 
         for (Feature feature : features)
         {
-            if (feature.getFeatureType() == FeatureType.POINT)
+            if (feature.contains(geoPoint.x, geoPoint.y))
             {
-                Point point = (Point) feature;
-
-                if (point.getX() == geoPoint.x && point.getY() == geoPoint.y)
-                {
-                    return point.getRecordNumber();
-                }
-            }
-
-            if (feature.getFeatureType() == FeatureType.POLYGON) // TODO: Add points and lines
-            {
-                Polygon polygon = (Polygon) feature;
-
-                if (polygon.contains(geoPoint.x, geoPoint.y))
-                {
-                    return polygon.getRecordNumber();
-                }
+                return feature.getRecordNumber();
             }
         }
 
