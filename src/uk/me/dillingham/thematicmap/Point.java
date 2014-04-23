@@ -23,6 +23,11 @@ public class Point extends Feature
         getParent().ellipse(screen.x, screen.y, 2, 2);
     }
 
+    public FeatureType getFeatureType()
+    {
+        return FeatureType.POINT;
+    }
+
     public float getX()
     {
         return x;

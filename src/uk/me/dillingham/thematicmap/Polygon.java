@@ -69,6 +69,11 @@ public class Polygon extends Feature
         }
     }
 
+    public FeatureType getFeatureType()
+    {
+        return FeatureType.POLYGON;
+    }
+
     public Rectangle2D getGeoBounds()
     {
         return path.getBounds2D();
