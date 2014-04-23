@@ -121,9 +121,10 @@ public class ThematicMap
 
     /**
      * Gets the record number of the feature located at the given screen point. This method will return -1 if no feature
-     * is located at the given screen point.
+     * is located at the given screen point. If more than one feature is located at the given screen point, this method
+     * will return the record number of the first feature in the attribute table located at the given screen point.
      * @param screenPoint The screen point.
-     * @return The record number or -1.
+     * @return The record number of the feature located at the given screen point or -1.
      */
     public int getRecordNumber(PVector screenPoint)
     {
@@ -131,6 +132,16 @@ public class ThematicMap
 
         for (Feature feature : features)
         {
+            if (feature.getFeatureType() == FeatureType.POINT)
+            {
+                Point point = (Point) feature;
+
+                if (point.getX() == geoPoint.x && point.getY() == geoPoint.y)
+                {
+                    return point.getRecordNumber();
+                }
+            }
+
             if (feature.getFeatureType() == FeatureType.POLYGON) // TODO: Add points and lines
             {
                 Polygon polygon = (Polygon) feature;
