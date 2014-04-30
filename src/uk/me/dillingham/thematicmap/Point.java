@@ -26,9 +26,9 @@ public class Point extends Feature
         y = 0;
     }
 
-    public void draw(ThematicMap thematicMap)
+    public void draw()
     {
-        PVector screen = thematicMap.geoToScreen(new PVector(x, y));
+        PVector screen = getThematicMap().geoToScreen(new PVector(x, y));
 
         getThematicMap().getParent().ellipse(screen.x, screen.y, 2, 2);
     }

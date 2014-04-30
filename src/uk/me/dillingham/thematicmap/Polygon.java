@@ -51,7 +51,7 @@ public class Polygon extends Feature
         }
     }
 
-    public void draw(ThematicMap thematicMap)
+    public void draw()
     {
         PathIterator iterator = path.getPathIterator(null);
 
@@ -68,7 +68,7 @@ public class Polygon extends Feature
 
             if (segmentType == PathIterator.SEG_MOVETO || segmentType == PathIterator.SEG_LINETO)
             {
-                PVector screen = thematicMap.geoToScreen(new PVector(geo[0], geo[1]));
+                PVector screen = getThematicMap().geoToScreen(new PVector(geo[0], geo[1]));
 
                 getThematicMap().getParent().vertex(screen.x, screen.y);
             }

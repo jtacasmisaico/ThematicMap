@@ -100,7 +100,7 @@ public class ThematicMap
     {
         for (Feature feature : features)
         {
-            feature.draw(this);
+            feature.draw();
         }
     }
 
@@ -113,7 +113,7 @@ public class ThematicMap
      */
     public void draw(int recordNumber)
     {
-        features.get(recordNumber).draw(this);
+        features.get(recordNumber).draw();
     }
 
     /**

@@ -51,10 +51,9 @@ public abstract class Feature
     }
 
     /**
-     * Draws the feature in the given thematic map.
-     * @param thematicMap The thematic map.
+     * Draws the feature.
      */
-    public abstract void draw(ThematicMap thematicMap);
+    public abstract void draw();
 
     /**
      * Gets the type of the feature.
