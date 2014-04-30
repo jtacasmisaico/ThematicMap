@@ -2,27 +2,25 @@ package uk.me.dillingham.thematicmap;
 
 import java.awt.geom.Rectangle2D;
 
-import processing.core.PApplet;
-
 /**
- * Class to draw a geographic feature in Processing.
+ * Class to draw a feature in Processing.
  * @author Iain Dillingham
  */
 public abstract class Feature
 {
-    private final int recordNumber;
-    private final PApplet p;
+    private int recordNumber;
+    private ThematicMap thematicMap;
 
     /**
-     * Constructs a geographic feature with the given record number within the given parent sketch.
+     * Constructs a feature with the given record number within the given thematic map.
      * @param recordNumber The record number.
-     * @param p The parent sketch.
+     * @param thematicMap The thematic map.
      */
-    protected Feature(int recordNumber, PApplet p)
+    protected Feature(int recordNumber, ThematicMap thematicMap)
     {
         this.recordNumber = recordNumber;
 
-        this.p = p;
+        this.thematicMap = thematicMap;
     }
 
     /**
@@ -35,12 +33,21 @@ public abstract class Feature
     }
 
     /**
-     * Gets the parent sketch of the feature.
-     * @return The parent sketch of the feature.
+     * Gets the thematic map associated with the feature.
+     * @return The thematic map associated with the feature.
      */
-    public PApplet getParent()
+    public ThematicMap getThematicMap()
     {
-        return p;
+        return thematicMap;
+    }
+
+    /**
+     * Sets the thematic map associated with the feature.
+     * @param thematicMap The thematic map associated with the feature.
+     */
+    public void setThematicMap(ThematicMap thematicMap)
+    {
+        this.thematicMap = thematicMap;
     }
 
     /**

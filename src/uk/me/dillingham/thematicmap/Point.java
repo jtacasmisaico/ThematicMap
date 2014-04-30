@@ -2,11 +2,10 @@ package uk.me.dillingham.thematicmap;
 
 import java.awt.geom.Rectangle2D;
 
-import processing.core.PApplet;
 import processing.core.PVector;
 
 /**
- * Class to draw a geographic point in Processing.
+ * Class to draw a point in Processing.
  * @author Iain Dillingham
  */
 public class Point extends Feature
@@ -14,13 +13,13 @@ public class Point extends Feature
     private float x, y;
 
     /**
-     * Constructs a geographic point with the given record number within the given parent sketch.
+     * Constructs a point with the given record number within the given thematic map.
      * @param recordNumber The record number.
-     * @param p The parent sketch.
+     * @param thematicMap The thematic map.
      */
-    public Point(int recordNumber, PApplet p)
+    public Point(int recordNumber, ThematicMap thematicMap)
     {
-        super(recordNumber, p);
+        super(recordNumber, thematicMap);
 
         x = 0;
 
@@ -31,7 +30,7 @@ public class Point extends Feature
     {
         PVector screen = thematicMap.geoToScreen(new PVector(x, y));
 
-        getParent().ellipse(screen.x, screen.y, 2, 2);
+        getThematicMap().getParent().ellipse(screen.x, screen.y, 2, 2);
     }
 
     public FeatureType getFeatureType()
@@ -59,7 +58,7 @@ public class Point extends Feature
     }
 
     /**
-     * Sets the x coordinate of the point to the given value.
+     * Sets the x coordinate of the point.
      * @param x The x coordinate of the point.
      */
     public void setX(float x)
@@ -77,7 +76,7 @@ public class Point extends Feature
     }
 
     /**
-     * Sets the y coordinate of the point to the given value.
+     * Sets the y coordinate of the point.
      * @param y The y coordinate of the point.
      */
     public void setY(float y)

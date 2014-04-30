@@ -52,7 +52,7 @@ public class ThematicMap
         {
             try
             {
-                features = ShpFileReader.read(shpFile, p);
+                features = ShpFileReader.read(shpFile, this);
             }
             catch (IOException e)
             {
@@ -209,6 +209,24 @@ public class ThematicMap
     public void setGeoBounds(Rectangle2D geoBounds)
     {
         this.geoBounds = geoBounds;
+    }
+
+    /**
+     * Gets the parent sketch.
+     * @return The parent sketch.
+     */
+    public PApplet getParent()
+    {
+        return p;
+    }
+
+    /**
+     * Sets the parent sketch.
+     * @param p The parent sketch.
+     */
+    public void setParent(PApplet p)
+    {
+        this.p = p;
     }
 
     /**

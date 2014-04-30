@@ -4,12 +4,11 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 
-import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
 
 /**
- * Class to draw a geographic polygon in Processing.
+ * Class to draw a polygon in Processing.
  * @author Iain Dillingham
  */
 public class Polygon extends Feature
@@ -17,13 +16,13 @@ public class Polygon extends Feature
     private Path2D.Float path;
 
     /**
-     * Constructs a geographic polygon with the given record number within the given parent sketch.
+     * Constructs a polygon with the given record number within the given thematic map.
      * @param recordNumber The record number.
-     * @param p The parent sketch.
+     * @param thematicMap The thematic map.
      */
-    public Polygon(int recordNumber, PApplet p)
+    public Polygon(int recordNumber, ThematicMap thematicMap)
     {
-        super(recordNumber, p);
+        super(recordNumber, thematicMap);
 
         path = new Path2D.Float();
     }
@@ -64,19 +63,19 @@ public class Polygon extends Feature
 
             if (segmentType == PathIterator.SEG_MOVETO)
             {
-                getParent().beginShape();
+                getThematicMap().getParent().beginShape();
             }
 
             if (segmentType == PathIterator.SEG_MOVETO || segmentType == PathIterator.SEG_LINETO)
             {
                 PVector screen = thematicMap.geoToScreen(new PVector(geo[0], geo[1]));
 
-                getParent().vertex(screen.x, screen.y);
+                getThematicMap().getParent().vertex(screen.x, screen.y);
             }
 
             if (segmentType == PathIterator.SEG_CLOSE)
             {
-                getParent().endShape(PConstants.CLOSE);
+                getThematicMap().getParent().endShape(PConstants.CLOSE);
             }
 
             iterator.next();
