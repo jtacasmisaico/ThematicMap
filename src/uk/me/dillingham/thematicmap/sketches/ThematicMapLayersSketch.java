@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 
 import processing.core.PApplet;
-import processing.core.PVector;
 import uk.me.dillingham.thematicmap.ThematicMap;
 
 @SuppressWarnings("serial")
@@ -84,7 +83,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         if (screenBounds.contains(mouseX, mouseY))
         {
-            int recordNumber = countriesLakes.getRecordNumber(new PVector(mouseX, mouseY));
+            int recordNumber = countriesLakes.getRecordNumber(mouseX, mouseY);
 
             if (recordNumber > -1)
             {

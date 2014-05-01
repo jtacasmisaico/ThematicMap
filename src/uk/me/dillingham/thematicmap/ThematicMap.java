@@ -120,12 +120,13 @@ public class ThematicMap
      * Gets the record number of the feature located at the given screen point. This method will return -1 if no feature
      * is located at the given screen point. If more than one feature is located at the given screen point, this method
      * will return the record number of the first feature in the attribute table located at the given screen point.
-     * @param screenPoint The screen point.
+     * @param x The x coordinate of the point in screen coordinates.
+     * @param y The y coordinate of the point in screen coordinates.
      * @return The record number of the feature located at the given screen point or -1.
      */
-    public int getRecordNumber(PVector screenPoint)
+    public int getRecordNumber(float x, float y)
     {
-        PVector geoPoint = screenToGeo(screenPoint);
+        PVector geoPoint = screenToGeo(new PVector(x, y));
 
         for (Feature feature : features)
         {
