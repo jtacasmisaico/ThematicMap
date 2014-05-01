@@ -76,11 +76,11 @@ public class ThematicMap
 
         if (geoBounds == null)
         {
-            geoBounds = features.get(0).getBounds();
+            geoBounds = features.get(0).getGeoBounds();
 
             for (Feature feature : features)
             {
-                geoBounds.add(feature.getBounds());
+                geoBounds.add(feature.getGeoBounds());
             }
         }
 

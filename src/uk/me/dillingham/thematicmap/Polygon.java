@@ -29,8 +29,8 @@ public class Polygon extends Feature
 
     /**
      * Adds a part to the polygon.
-     * @param x The x coordinates of the part.
-     * @param y The y coordinates of the part.
+     * @param x The x coordinates of the part in geographic coordinates.
+     * @param y The y coordinates of the part in geographic coordinates.
      */
     public void addPart(float[] x, float[] y)
     {
@@ -87,7 +87,7 @@ public class Polygon extends Feature
         return FeatureType.POLYGON;
     }
 
-    public Rectangle2D getBounds()
+    public Rectangle2D getGeoBounds()
     {
         return path.getBounds2D();
     }

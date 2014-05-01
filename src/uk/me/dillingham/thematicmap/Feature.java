@@ -42,7 +42,7 @@ public abstract class Feature
     }
 
     /**
-     * Draws the feature.
+     * Draws the feature within the associated thematic map.
      */
     public abstract void draw();
 
@@ -53,15 +53,15 @@ public abstract class Feature
     public abstract FeatureType getFeatureType();
 
     /**
-     * Gets the bounds of the feature.
-     * @return The bounds of the feature.
+     * Gets the bounds of the feature in geographic coordinates.
+     * @return The bounds of the feature in geographic coordinates.
      */
-    public abstract Rectangle2D getBounds();
+    public abstract Rectangle2D getGeoBounds();
 
     /**
      * Tests whether the given point is contained by the feature.
-     * @param x The x coordinate of the point.
-     * @param y The y coordinate of the point.
+     * @param x The x coordinate of the point in geographic coordinates.
+     * @param y The y coordinate of the point in geographic coordinates.
      * @return True if the given point is contained by the feature.
      */
     public abstract boolean contains(float x, float y);

@@ -38,7 +38,7 @@ public class Point extends Feature
         return FeatureType.POINT;
     }
 
-    public Rectangle2D getBounds()
+    public Rectangle2D getGeoBounds()
     {
         return new Rectangle2D.Float(x, y, 0, 0);
     }
@@ -49,8 +49,8 @@ public class Point extends Feature
     }
 
     /**
-     * Gets the x coordinate of the point.
-     * @return The x coordinate of the point.
+     * Gets the x coordinate of the point in geographic coordinates.
+     * @return The x coordinate of the point in geographic coordinates.
      */
     public float getX()
     {
@@ -58,8 +58,8 @@ public class Point extends Feature
     }
 
     /**
-     * Sets the x coordinate of the point.
-     * @param x The x coordinate of the point.
+     * Sets the x coordinate of the point in geographic coordinates.
+     * @param x The x coordinate of the point in geographic coordinates.
      */
     public void setX(float x)
     {
@@ -67,8 +67,8 @@ public class Point extends Feature
     }
 
     /**
-     * Gets the y coordinate of the point.
-     * @return The y coordinate of the point.
+     * Gets the y coordinate of the point in geographic coordinates.
+     * @return The y coordinate of the point in geographic coordinates.
      */
     public float getY()
     {
@@ -76,8 +76,8 @@ public class Point extends Feature
     }
 
     /**
-     * Sets the y coordinate of the point.
-     * @param y The y coordinate of the point.
+     * Sets the y coordinate of the point in geographic coordinates.
+     * @param y The y coordinate of the point in geographic coordinates.
      */
     public void setY(float y)
     {
