@@ -8,8 +8,8 @@ import java.awt.geom.Rectangle2D;
  */
 public abstract class Feature
 {
-    private int recordNumber;
-    private ThematicMap thematicMap;
+    private final int recordNumber;
+    private final ThematicMap thematicMap;
 
     /**
      * Constructs a feature with the given record number within the given thematic map.
@@ -39,15 +39,6 @@ public abstract class Feature
     public ThematicMap getThematicMap()
     {
         return thematicMap;
-    }
-
-    /**
-     * Sets the thematic map associated with the feature.
-     * @param thematicMap The thematic map associated with the feature.
-     */
-    public void setThematicMap(ThematicMap thematicMap)
-    {
-        this.thematicMap = thematicMap;
     }
 
     /**
