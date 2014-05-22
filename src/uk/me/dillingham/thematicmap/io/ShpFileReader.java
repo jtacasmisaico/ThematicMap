@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import uk.me.dillingham.thematicmap.Feature;
+import uk.me.dillingham.thematicmap.Line;
 import uk.me.dillingham.thematicmap.Point;
 import uk.me.dillingham.thematicmap.Polygon;
 import uk.me.dillingham.thematicmap.ThematicMap;
@@ -77,9 +78,9 @@ public class ShpFileReader
                 features.add(point);
             }
 
-            if (shapeType == 5)
+            if (shapeType == 3 || shapeType == 5)
             {
-                // Polygon
+                // Line or Polygon
 
                 float xMin = (float) recContent.getDouble();
                 float yMin = (float) recContent.getDouble();
@@ -106,30 +107,65 @@ public class ShpFileReader
                     y[i] = (float) recContent.getDouble();
                 }
 
-                Polygon polygon = new Polygon(recNumber - 1, thematicMap); // Starts at 0
+                // Line
 
-                for (int i = 0; i < numParts; i++)
+                if (shapeType == 3)
                 {
-                    int from = parts[i];
+                    Line line = new Line(recNumber - 1, thematicMap); // Starts at 0
 
-                    int to;
-
-                    if (i + 1 < numParts)
+                    for (int i = 0; i < numParts; i++)
                     {
-                        to = parts[i + 1];
-                    }
-                    else
-                    {
-                        to = numPoints;
+                        int from = parts[i];
+
+                        int to;
+
+                        if (i + 1 < numParts)
+                        {
+                            to = parts[i + 1];
+                        }
+                        else
+                        {
+                            to = numPoints;
+                        }
+
+                        float[] x0 = Arrays.copyOfRange(x, from, to);
+                        float[] y0 = Arrays.copyOfRange(y, from, to);
+
+                        line.addPart(x0, y0);
                     }
 
-                    float[] x0 = Arrays.copyOfRange(x, from, to);
-                    float[] y0 = Arrays.copyOfRange(y, from, to);
-
-                    polygon.addPart(x0, y0);
+                    features.add(line);
                 }
 
-                features.add(polygon);
+                // Polygon
+
+                if (shapeType == 5)
+                {
+                    Polygon polygon = new Polygon(recNumber - 1, thematicMap); // Starts at 0
+
+                    for (int i = 0; i < numParts; i++)
+                    {
+                        int from = parts[i];
+
+                        int to;
+
+                        if (i + 1 < numParts)
+                        {
+                            to = parts[i + 1];
+                        }
+                        else
+                        {
+                            to = numPoints;
+                        }
+
+                        float[] x0 = Arrays.copyOfRange(x, from, to);
+                        float[] y0 = Arrays.copyOfRange(y, from, to);
+
+                        polygon.addPart(x0, y0);
+                    }
+
+                    features.add(polygon);
+                }
             }
 
             // Increment position
