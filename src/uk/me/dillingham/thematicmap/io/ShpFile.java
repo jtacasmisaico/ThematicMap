@@ -26,13 +26,13 @@ public class ShpFile
 
     private List<Geometry> geometries;
 
-    private final Comparator<LinearRing> AREA_ORDER = new Comparator<LinearRing>()
+    private static final Comparator<LinearRing> AREA_ORDER = new Comparator<LinearRing>()
     {
         public int compare(LinearRing linearRing1, LinearRing linearRing2)
         {
-            Polygon polygon1 = geometryFactory.createPolygon(linearRing1);
+            Polygon polygon1 = linearRing1.getFactory().createPolygon(linearRing1);
 
-            Polygon polygon2 = geometryFactory.createPolygon(linearRing2);
+            Polygon polygon2 = linearRing2.getFactory().createPolygon(linearRing2);
 
             double result = polygon1.getArea() - polygon2.getArea();
 
