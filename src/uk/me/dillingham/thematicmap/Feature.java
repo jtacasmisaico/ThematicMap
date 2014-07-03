@@ -34,12 +34,43 @@ public abstract class Feature
     }
 
     /**
+     * Tests whether the given point is contained by the feature.
+     * @param x The x coordinate of the point in geographic coordinates.
+     * @param y The y coordinate of the point in geographic coordinates.
+     * @return True if the given point is contained by the feature.
+     */
+    public boolean contains(float x, float y)
+    {
+        return geometry.contains(geometry.getFactory().createPoint(new Coordinate(x, y)));
+    }
+
+    /**
+     * Draws the feature within the associated thematic map.
+     */
+    public abstract void draw();
+
+    /**
      * Gets the index associated with the feature.
      * @return The index associated with the feature.
      */
     public int getFeatureIndex()
     {
         return featureIndex;
+    }
+
+    /**
+     * Gets the type of the feature.
+     * @return The type of the feature.
+     */
+    public abstract FeatureType getFeatureType();
+
+    /**
+     * Gets the bounds of the feature in geographic coordinates.
+     * @return The bounds of the feature in geographic coordinates.
+     */
+    public Rectangle2D getGeoBounds()
+    {
+        return SHAPE_WRITER.toShape(geometry).getBounds2D();
     }
 
     /**
@@ -59,35 +90,4 @@ public abstract class Feature
     {
         return thematicMap;
     }
-
-    /**
-     * Gets the type of the feature.
-     * @return The type of the feature.
-     */
-    public abstract FeatureType getFeatureType();
-
-    /**
-     * Gets the bounds of the feature in geographic coordinates.
-     * @return The bounds of the feature in geographic coordinates.
-     */
-    public Rectangle2D getGeoBounds()
-    {
-        return SHAPE_WRITER.toShape(geometry).getBounds2D();
-    }
-
-    /**
-     * Tests whether the given point is contained by the feature.
-     * @param x The x coordinate of the point in geographic coordinates.
-     * @param y The y coordinate of the point in geographic coordinates.
-     * @return True if the given point is contained by the feature.
-     */
-    public boolean contains(float x, float y)
-    {
-        return geometry.contains(geometry.getFactory().createPoint(new Coordinate(x, y)));
-    }
-
-    /**
-     * Draws the feature within the associated thematic map.
-     */
-    public abstract void draw();
 }
