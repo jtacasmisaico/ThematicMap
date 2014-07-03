@@ -289,29 +289,4 @@ public class ShpFile
 
         return geometryFactory.buildGeometry(polygons);
     }
-
-    public static void main(String[] args)
-    {
-        PApplet p = new PApplet();
-
-        String filename = "./data/ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp";
-
-        InputStream inputStream = p.createInput(filename);
-
-        try
-        {
-            ShpFile shpFile = new ShpFile();
-
-            shpFile.read(inputStream);
-
-            for (Geometry geometry : shpFile.getGeometries())
-            {
-                System.out.println(geometry.getGeometryType());
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
 }

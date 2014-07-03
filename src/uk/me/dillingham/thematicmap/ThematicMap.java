@@ -83,7 +83,7 @@ public class ThematicMap
 
                     if (geometryType.equals("LineString") | geometryType.equals("MultiLineString"))
                     {
-                        features.add(new Line(0, geometry, this));
+                        features.add(new LineString(0, geometry, this));
                     }
 
                     if (geometryType.equals("Polygon") || geometryType.equals("MultiPolygon"))
@@ -295,12 +295,5 @@ public class ThematicMap
     public void setScreenBounds(Rectangle2D screenBounds)
     {
         this.screenBounds = screenBounds;
-    }
-
-    public static void main(String[] args)
-    {
-        ThematicMap thematicMap = new ThematicMap(new PApplet());
-
-        thematicMap.read("data/ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
     }
 }

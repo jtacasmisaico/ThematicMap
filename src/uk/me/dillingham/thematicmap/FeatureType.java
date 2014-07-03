@@ -6,5 +6,5 @@ package uk.me.dillingham.thematicmap;
  */
 public enum FeatureType
 {
-    POINT, LINE, POLYGON;
+    POINT, LINE_STRING, POLYGON;
 }

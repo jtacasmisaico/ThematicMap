@@ -6,18 +6,18 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Class to draw a line in Processing.
+ * Class to draw a line string in Processing.
  * @author Iain Dillingham
  */
-public class Line extends Feature
+public class LineString extends Feature
 {
     /**
-     * Constructs a line with the given record number and geometry within the given thematic map.
+     * Constructs a line string with the given record number and geometry within the given thematic map.
      * @param recordNumber The record number.
      * @param The geometry.
      * @param thematicMap The thematic map.
      */
-    public Line(int recordNumber, Geometry geometry, ThematicMap thematicMap)
+    public LineString(int recordNumber, Geometry geometry, ThematicMap thematicMap)
     {
         super(recordNumber, geometry, thematicMap);
     }
@@ -43,6 +43,6 @@ public class Line extends Feature
 
     public FeatureType getFeatureType()
     {
-        return FeatureType.LINE;
+        return FeatureType.LINE_STRING;
     }
 }
