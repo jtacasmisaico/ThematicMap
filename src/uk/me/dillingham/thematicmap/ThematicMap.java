@@ -78,17 +78,17 @@ public class ThematicMap
 
                     if (geometryType.equals("Point") || geometryType.equals("MultiPoint"))
                     {
-                        features.add(new Point(0, geometry, this));
+                        features.add(new Point(i, geometry, this));
                     }
 
                     if (geometryType.equals("LineString") | geometryType.equals("MultiLineString"))
                     {
-                        features.add(new LineString(0, geometry, this));
+                        features.add(new LineString(i, geometry, this));
                     }
 
                     if (geometryType.equals("Polygon") || geometryType.equals("MultiPolygon"))
                     {
-                        features.add(new Polygon(0, geometry, this));
+                        features.add(new Polygon(i, geometry, this));
                     }
                 }
             }
@@ -112,8 +112,6 @@ public class ThematicMap
         {
             try
             {
-                // TODO: Features (geometries) may not match attributes
-
                 attributeTable = new Table(csvFileInputStream, "csv, header");
             }
             catch (IOException e)
