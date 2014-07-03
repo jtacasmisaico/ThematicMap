@@ -222,8 +222,8 @@ public class ThematicMap
     }
 
     /**
-     * Gets the attribute table of the thematic map.
-     * @return The attribute table of the thematic map.
+     * Gets the attribute table.
+     * @return The attribute table.
      */
     public Table getAttributeTable()
     {
@@ -231,7 +231,7 @@ public class ThematicMap
     }
 
     /**
-     * Sets the attribute table of the thematic map to the given attribute table.
+     * Sets the attribute table to the given attribute table.
      * @param attributeTable The attribute table.
      */
     public void setAttributeTable(Table attributeTable)
