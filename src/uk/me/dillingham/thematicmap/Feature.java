@@ -24,8 +24,8 @@ public abstract class Feature
     }
 
     /**
-     * Gets the record number of the feature.
-     * @return The record number of the feature.
+     * Gets the record number associated with the feature.
+     * @return The record number associated with the feature.
      */
     public int getRecordNumber()
     {
