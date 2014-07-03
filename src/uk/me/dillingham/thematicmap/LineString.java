@@ -14,12 +14,18 @@ public class LineString extends Feature
     /**
      * Constructs a line string with the given record number and geometry within the given thematic map.
      * @param recordNumber The record number.
-     * @param The geometry.
+     * @param geometry The geometry.
      * @param thematicMap The thematic map.
+     * @throws ClassCastException If geometry is neither a LineString nor a MultiLineString.
      */
     public LineString(int recordNumber, Geometry geometry, ThematicMap thematicMap)
     {
         super(recordNumber, geometry, thematicMap);
+
+        if (!geometry.getGeometryType().equals("LineString") && !geometry.getGeometryType().equals("MultiLineString"))
+        {
+            throw new ClassCastException();
+        }
     }
 
     public void draw()

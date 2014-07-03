@@ -16,10 +16,16 @@ public class Point extends Feature
      * @param recordNumber The record number.
      * @param geometry The geometry.
      * @param thematicMap The thematic map.
+     * @throws ClassCastException If geometry is neither a Point nor a MultiPoint.
      */
     public Point(int recordNumber, Geometry geometry, ThematicMap thematicMap)
     {
         super(recordNumber, geometry, thematicMap);
+
+        if (!geometry.getGeometryType().equals("Point") && !geometry.getGeometryType().equals("MultiPoint"))
+        {
+            throw new ClassCastException();
+        }
     }
 
     public void draw()

@@ -17,10 +17,16 @@ public class Polygon extends Feature
      * @param recordNumber The record number.
      * @param geometry The geometry.
      * @param thematicMap The thematic map.
+     * @throws ClassCastException If geometry is neither a Polygon nor a MultiPolygon.
      */
     public Polygon(int recordNumber, Geometry geometry, ThematicMap thematicMap)
     {
         super(recordNumber, geometry, thematicMap);
+
+        if (!geometry.getGeometryType().equals("Polygon") && !geometry.getGeometryType().equals("MultiPolygon"))
+        {
+            throw new ClassCastException();
+        }
     }
 
     public void draw()
