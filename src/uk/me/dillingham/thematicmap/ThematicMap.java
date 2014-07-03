@@ -1,15 +1,15 @@
 package uk.me.dillingham.thematicmap;
 
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PVector;
 import processing.data.Table;
-import uk.me.dillingham.thematicmap.io.ShpFileReader;
+import uk.me.dillingham.thematicmap.io.ShpFile;
 
 /**
  * Class to draw a thematic map in Processing.
@@ -42,17 +42,29 @@ public class ThematicMap
     /**
      * Reads geometry and attributes from the given shapefile. A shapefile consists of a main file (.shp), an index file
      * (.shx), and dBASE table (.dbf).
-     * @param shapefile The name of the shapefile, which should be specified without the extension.
+     * @param shapefile The name of the shapefile.
      */
     public void read(String shapefile)
     {
-        File shpFile = new File("data" + File.separator + shapefile + ".shp");
+        String[] tokens = PApplet.split(shapefile, '.');
 
-        if (shpFile.exists())
+        // Read geometry
+
+        String shpFileName = tokens[0] + ".shp";
+
+        InputStream shpFileInputStream = p.createInput(shpFileName);
+
+        if (shpFileInputStream == null)
+        {
+            System.err.println("Error: Cannot read " + shpFileName);
+        }
+        else
         {
             try
             {
-                features = ShpFileReader.read(shpFile, this);
+                ShpFile shpFile = new ShpFile();
+
+                shpFile.read(shpFileInputStream);
             }
             catch (IOException e)
             {
@@ -60,13 +72,21 @@ public class ThematicMap
             }
         }
 
-        File csvFile = new File("data" + File.separator + shapefile + ".csv");
+        // Read attributes
 
-        if (csvFile.exists())
+        String csvFileName = tokens[0] + ".csv";
+
+        InputStream csvFileInputStream = p.createInput(csvFileName);
+
+        if (csvFileInputStream == null)
+        {
+            System.err.println("Error: Cannot read " + csvFileName);
+        }
+        else
         {
             try
             {
-                attributeTable = new Table(csvFile, "header");
+                attributeTable = new Table(csvFileInputStream, "csv, header");
             }
             catch (IOException e)
             {
@@ -247,5 +267,12 @@ public class ThematicMap
     public void setScreenBounds(Rectangle2D screenBounds)
     {
         this.screenBounds = screenBounds;
+    }
+
+    public static void main(String[] args)
+    {
+        ThematicMap thematicMap = new ThematicMap(new PApplet());
+
+        thematicMap.read("data/ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
     }
 }
