@@ -51,84 +51,77 @@ public class ShpFile
         geometries = new ArrayList<Geometry>();
     }
 
-    public void read(InputStream inputStream)
+    public void read(InputStream inputStream) throws IOException
     {
-        try
+        // File header
+
+        ByteBuffer fileHeader = ByteBuffer.allocate(100);
+
+        inputStream.read(fileHeader.array());
+
+        fileHeader.order(ByteOrder.BIG_ENDIAN);
+
+        int fileLength = fileHeader.getInt(24); // Length of file (bytes)
+
+        fileHeader.order(ByteOrder.LITTLE_ENDIAN);
+
+        int shapeType = fileHeader.getInt(32);
+
+        checkShapeType(shapeType);
+
+        // Record
+
+        int currentPosition = 100; // Current position in file (bytes)
+
+        while (currentPosition < fileLength)
         {
-            // File header
+            Geometry geometry = null;
 
-            ByteBuffer fileHeader = ByteBuffer.allocate(100);
+            // Record header
 
-            inputStream.read(fileHeader.array());
+            ByteBuffer recordHeader = ByteBuffer.allocate(8);
 
-            fileHeader.order(ByteOrder.BIG_ENDIAN);
+            inputStream.read(recordHeader.array());
 
-            int fileLength = fileHeader.getInt(24); // Length of file (bytes)
+            recordHeader.order(ByteOrder.BIG_ENDIAN);
 
-            fileHeader.order(ByteOrder.LITTLE_ENDIAN);
+            int contentLength = recordHeader.getInt(4); // Length of content (16-bit words)
 
-            int shapeType = fileHeader.getInt(32);
+            // Record content
 
-            checkShapeType(shapeType);
+            ByteBuffer recordContent = ByteBuffer.allocate(contentLength * 2); // Why?
 
-            // Record
+            inputStream.read(recordContent.array());
 
-            int currentPosition = 100; // Current position in file (bytes)
+            recordContent.order(ByteOrder.LITTLE_ENDIAN);
 
-            while (currentPosition < fileLength)
+            // Shapefile Point
+
+            if (shapeType == 1)
             {
-                Geometry geometry = null;
-
-                // Record header
-
-                ByteBuffer recordHeader = ByteBuffer.allocate(8);
-
-                inputStream.read(recordHeader.array());
-
-                recordHeader.order(ByteOrder.BIG_ENDIAN);
-
-                int contentLength = recordHeader.getInt(4); // Length of content (16-bit words)
-
-                // Record content
-
-                ByteBuffer recordContent = ByteBuffer.allocate(contentLength * 2); // Why?
-
-                inputStream.read(recordContent.array());
-
-                recordContent.order(ByteOrder.LITTLE_ENDIAN);
-
-                // Shapefile Point
-
-                if (shapeType == 1)
-                {
-                    geometry = readShapefilePoint(recordContent);
-                }
-
-                // Shapefile PolyLine
-
-                if (shapeType == 3)
-                {
-                    geometry = readShapefilePolyLine(recordContent);
-                }
-
-                // Shapefile Polygon
-
-                if (shapeType == 5)
-                {
-                    geometry = readShapefilePolygon(recordContent);
-                }
-
-                geometries.add(geometry);
-
-                currentPosition += 4 + contentLength;
+                geometry = readShapefilePoint(recordContent);
             }
 
-            inputStream.close();
+            // Shapefile PolyLine
+
+            if (shapeType == 3)
+            {
+                geometry = readShapefilePolyLine(recordContent);
+            }
+
+            // Shapefile Polygon
+
+            if (shapeType == 5)
+            {
+                geometry = readShapefilePolygon(recordContent);
+            }
+
+            geometries.add(geometry);
+
+            currentPosition += 4 + contentLength;
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+
+        inputStream.close();
     }
 
     public GeometryFactory getGeometryFactory()
@@ -305,13 +298,20 @@ public class ShpFile
 
         InputStream inputStream = p.createInput(filename);
 
-        ShpFile shpFile = new ShpFile();
-
-        shpFile.read(inputStream);
-
-        for (Geometry geometry : shpFile.getGeometries())
+        try
         {
-            System.out.println(geometry.getGeometryType());
+            ShpFile shpFile = new ShpFile();
+
+            shpFile.read(inputStream);
+
+            for (Geometry geometry : shpFile.getGeometries())
+            {
+                System.out.println(geometry.getGeometryType());
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }
