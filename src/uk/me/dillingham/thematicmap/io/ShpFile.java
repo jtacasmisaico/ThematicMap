@@ -1,8 +1,5 @@
 package uk.me.dillingham.thematicmap.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -13,6 +10,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import processing.core.PApplet;
 
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -52,12 +51,10 @@ public class ShpFile
         geometries = new ArrayList<Geometry>();
     }
 
-    public void read(File shpFile)
+    public void read(InputStream inputStream)
     {
         try
         {
-            InputStream inputStream = new FileInputStream(shpFile);
-
             // File header
 
             ByteBuffer fileHeader = ByteBuffer.allocate(100);
@@ -127,10 +124,6 @@ public class ShpFile
             }
 
             inputStream.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
         }
         catch (IOException e)
         {
@@ -306,9 +299,15 @@ public class ShpFile
 
     public static void main(String[] args)
     {
+        PApplet p = new PApplet();
+
+        String filename = "./data/ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp";
+
+        InputStream inputStream = p.createInput(filename);
+
         ShpFile shpFile = new ShpFile();
 
-        shpFile.read(new File("./data/ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp"));
+        shpFile.read(inputStream);
 
         for (Geometry geometry : shpFile.getGeometries())
         {
