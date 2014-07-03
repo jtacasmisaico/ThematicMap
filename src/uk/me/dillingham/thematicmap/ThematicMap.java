@@ -11,6 +11,8 @@ import processing.core.PVector;
 import processing.data.Table;
 import uk.me.dillingham.thematicmap.io.ShpFile;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * Class to draw a thematic map in Processing.
  * @author Iain Dillingham
@@ -65,6 +67,30 @@ public class ThematicMap
                 ShpFile shpFile = new ShpFile();
 
                 shpFile.read(shpFileInputStream);
+
+                List<Geometry> geometries = shpFile.getGeometries();
+
+                for (int i = 0; i < geometries.size(); i++)
+                {
+                    Geometry geometry = geometries.get(i);
+
+                    String geometryType = geometry.getGeometryType();
+
+                    if (geometryType.equals("Point") || geometryType.equals("MultiPoint"))
+                    {
+                        features.add(new Point(0, geometry, this));
+                    }
+
+                    if (geometryType.equals("LineString") | geometryType.equals("MultiLineString"))
+                    {
+                        features.add(new Line(0, geometry, this));
+                    }
+
+                    if (geometryType.equals("Polygon") || geometryType.equals("MultiPolygon"))
+                    {
+                        features.add(new Polygon(0, geometry, this));
+                    }
+                }
             }
             catch (IOException e)
             {
@@ -86,6 +112,8 @@ public class ThematicMap
         {
             try
             {
+                // TODO: Features (geometries) may not match attributes
+
                 attributeTable = new Table(csvFileInputStream, "csv, header");
             }
             catch (IOException e)
