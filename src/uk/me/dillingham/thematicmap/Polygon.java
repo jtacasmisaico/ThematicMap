@@ -13,15 +13,15 @@ import com.vividsolutions.jts.geom.Geometry;
 public class Polygon extends Feature
 {
     /**
-     * Constructs a polygon with the given record number and geometry within the given thematic map.
-     * @param recordNumber The record number.
+     * Constructs a polygon with the given feature index and geometry within the given thematic map.
+     * @param featureIndex The feature index.
      * @param geometry The geometry.
      * @param thematicMap The thematic map.
      * @throws ClassCastException If geometry is neither a Polygon nor a MultiPolygon.
      */
-    public Polygon(int recordNumber, Geometry geometry, ThematicMap thematicMap)
+    public Polygon(int featureIndex, Geometry geometry, ThematicMap thematicMap)
     {
-        super(recordNumber, geometry, thematicMap);
+        super(featureIndex, geometry, thematicMap);
 
         if (!geometry.getGeometryType().equals("Polygon") && !geometry.getGeometryType().equals("MultiPolygon"))
         {

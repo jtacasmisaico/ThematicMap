@@ -151,26 +151,26 @@ public class ThematicMap
     }
 
     /**
-     * Draws the feature with the given record number. Record numbers are zero-indexed. If the bounds of the thematic
-     * map in geographic coordinates and in screen coordinates have not been set by {@link #setGeoBounds(Rectangle2D)}
-     * and {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be those of the features read from the
+     * Draws the feature with the given index. Features are zero-indexed. If the bounds of the thematic map in
+     * geographic coordinates and in screen coordinates have not been set by {@link #setGeoBounds(Rectangle2D)} and
+     * {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be those of the features read from the
      * shapefile and the screen bounds will be those of the parent sketch.
-     * @param recordNumber The record number. Record numbers are zero-indexed.
+     * @param featureIndex The index of the feature. Features are zero-indexed.
      */
-    public void draw(int recordNumber)
+    public void draw(int featureIndex)
     {
-        features.get(recordNumber).draw();
+        features.get(featureIndex).draw();
     }
 
     /**
-     * Gets the record number of the feature located at the given screen point. This method will return -1 if no feature
-     * is located at the given screen point. If more than one feature is located at the given screen point, this method
-     * will return the record number of the first feature in the attribute table located at the given screen point.
+     * Gets the index of the feature located at the given screen point. This method will return -1 if no feature is
+     * located at the given screen point. If more than one feature is located at the given screen point, this method
+     * will return the index of the first feature located at the given screen point.
      * @param x The x coordinate of the point in screen coordinates.
      * @param y The y coordinate of the point in screen coordinates.
-     * @return The record number of the feature located at the given screen point or -1.
+     * @return The index of the feature located at the given screen point or -1.
      */
-    public int getRecordNumber(float x, float y)
+    public int getFeatureIndex(float x, float y)
     {
         PVector geoPoint = screenToGeo(new PVector(x, y));
 
@@ -178,7 +178,7 @@ public class ThematicMap
         {
             if (feature.contains(geoPoint.x, geoPoint.y))
             {
-                return feature.getRecordNumber();
+                return feature.getFeatureIndex();
             }
         }
 

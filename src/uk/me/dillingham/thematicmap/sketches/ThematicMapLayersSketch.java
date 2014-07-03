@@ -83,15 +83,15 @@ public class ThematicMapLayersSketch extends PApplet
 
         if (screenBounds.contains(mouseX, mouseY))
         {
-            int recordNumber = countriesLakes.getRecordNumber(mouseX, mouseY);
+            int featureIndex = countriesLakes.getFeatureIndex(mouseX, mouseY);
 
-            if (recordNumber > -1)
+            if (featureIndex > -1)
             {
                 noStroke();
 
                 fill(128);
 
-                text(countriesLakes.getAttributeTable().getString(recordNumber, 3), minX + 2, minY);
+                text(countriesLakes.getAttributeTable().getString(featureIndex, 3), minX + 2, minY);
             }
         }
 

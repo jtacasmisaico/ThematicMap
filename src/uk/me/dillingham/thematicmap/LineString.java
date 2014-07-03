@@ -12,15 +12,15 @@ import com.vividsolutions.jts.geom.Geometry;
 public class LineString extends Feature
 {
     /**
-     * Constructs a line string with the given record number and geometry within the given thematic map.
-     * @param recordNumber The record number.
+     * Constructs a line string with the given feature index and geometry within the given thematic map.
+     * @param featureIndex The feature index.
      * @param geometry The geometry.
      * @param thematicMap The thematic map.
      * @throws ClassCastException If geometry is neither a LineString nor a MultiLineString.
      */
-    public LineString(int recordNumber, Geometry geometry, ThematicMap thematicMap)
+    public LineString(int featureIndex, Geometry geometry, ThematicMap thematicMap)
     {
-        super(recordNumber, geometry, thematicMap);
+        super(featureIndex, geometry, thematicMap);
 
         if (!geometry.getGeometryType().equals("LineString") && !geometry.getGeometryType().equals("MultiLineString"))
         {

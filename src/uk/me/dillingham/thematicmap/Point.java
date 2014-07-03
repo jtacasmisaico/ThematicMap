@@ -12,15 +12,15 @@ import com.vividsolutions.jts.geom.Geometry;
 public class Point extends Feature
 {
     /**
-     * Constructs a point with the given record number and geometry within the given thematic map.
-     * @param recordNumber The record number.
+     * Constructs a point with the given feature index and geometry within the given thematic map.
+     * @param featureIndex The feature index.
      * @param geometry The geometry.
      * @param thematicMap The thematic map.
      * @throws ClassCastException If geometry is neither a Point nor a MultiPoint.
      */
-    public Point(int recordNumber, Geometry geometry, ThematicMap thematicMap)
+    public Point(int featureIndex, Geometry geometry, ThematicMap thematicMap)
     {
-        super(recordNumber, geometry, thematicMap);
+        super(featureIndex, geometry, thematicMap);
 
         if (!geometry.getGeometryType().equals("Point") && !geometry.getGeometryType().equals("MultiPoint"))
         {

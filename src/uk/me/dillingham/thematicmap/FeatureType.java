@@ -1,7 +1,7 @@
 package uk.me.dillingham.thematicmap;
 
 /**
- * Enum type to represent the type of a geographic feature.
+ * Enum to represent the type of a feature.
  * @author Iain Dillingham
  */
 public enum FeatureType

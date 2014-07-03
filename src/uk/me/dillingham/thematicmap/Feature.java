@@ -12,21 +12,21 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public abstract class Feature
 {
-    private final int recordNumber;
+    private final int featureIndex;
     private final Geometry geometry;
     private final ThematicMap thematicMap;
 
     private static final ShapeWriter SHAPE_WRITER = new ShapeWriter();
 
     /**
-     * Constructs a feature with the given record number and geometry within the given thematic map.
-     * @param recordNumber The record number.
+     * Constructs a feature with the given index and geometry within the given thematic map.
+     * @param featureIndex The index.
      * @param geometry The geometry.
      * @param thematicMap The thematic map.
      */
-    protected Feature(int recordNumber, Geometry geometry, ThematicMap thematicMap)
+    protected Feature(int featureIndex, Geometry geometry, ThematicMap thematicMap)
     {
-        this.recordNumber = recordNumber;
+        this.featureIndex = featureIndex;
 
         this.geometry = geometry;
 
@@ -34,12 +34,12 @@ public abstract class Feature
     }
 
     /**
-     * Gets the record number associated with the feature.
-     * @return The record number associated with the feature.
+     * Gets the index associated with the feature.
+     * @return The index associated with the feature.
      */
-    public int getRecordNumber()
+    public int getFeatureIndex()
     {
-        return recordNumber;
+        return featureIndex;
     }
 
     /**
