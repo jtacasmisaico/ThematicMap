@@ -11,8 +11,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import processing.core.PApplet;
-
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
