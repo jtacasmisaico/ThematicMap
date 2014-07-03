@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
 import processing.data.Table;
 import uk.me.dillingham.thematicmap.io.ShpFileReader;
@@ -105,6 +106,18 @@ public class ThematicMap
     }
 
     /**
+     * Draws the thematic map within the given graphics context.
+     * @param g The graphics context.
+     */
+    public void draw(PGraphics g)
+    {
+        for (Feature feature : features)
+        {
+            feature.draw(g);
+        }
+    }
+
+    /**
      * Draws the feature with the given record number. Record numbers are zero-indexed. If the bounds of the thematic
      * map in geographic coordinates and in screen coordinates have not been set by {@link #setGeoBounds(Rectangle2D)}
      * and {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be those of the features read from the
@@ -114,6 +127,16 @@ public class ThematicMap
     public void draw(int recordNumber)
     {
         features.get(recordNumber).draw();
+    }
+
+    /**
+     * Draws the feature with the given record number within the given graphics context.
+     * @param recordNumber The record number. Record numbers are zero-indexed.
+     * @param g The graphics context.
+     */
+    public void draw(int recordNumber, PGraphics g)
+    {
+        features.get(recordNumber).draw(g);
     }
 
     /**
@@ -137,6 +160,15 @@ public class ThematicMap
         }
 
         return -1;
+    }
+
+    /**
+     * Gets the number of features.
+     * @return The number of features.
+     */
+    public int getNumFeatures()
+    {
+        return features.size();
     }
 
     /**

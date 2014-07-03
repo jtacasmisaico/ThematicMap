@@ -4,6 +4,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 /**
@@ -79,6 +80,11 @@ public class Line extends Feature
 
             iterator.next();
         }
+    }
+
+    public void draw(PGraphics g)
+    {
+        // TODO
     }
 
     public FeatureType getFeatureType()

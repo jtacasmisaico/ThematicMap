@@ -2,6 +2,8 @@ package uk.me.dillingham.thematicmap;
 
 import java.awt.geom.Rectangle2D;
 
+import processing.core.PGraphics;
+
 /**
  * Class to draw a feature in Processing.
  * @author Iain Dillingham
@@ -45,6 +47,12 @@ public abstract class Feature
      * Draws the feature within the associated thematic map.
      */
     public abstract void draw();
+
+    /**
+     * Draws the feature within the given graphics context.
+     * @param g The graphics context.
+     */
+    public abstract void draw(PGraphics g);
 
     /**
      * Gets the type of the feature.

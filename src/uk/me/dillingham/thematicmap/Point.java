@@ -2,6 +2,7 @@ package uk.me.dillingham.thematicmap;
 
 import java.awt.geom.Rectangle2D;
 
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 /**
@@ -31,6 +32,11 @@ public class Point extends Feature
         PVector screen = getThematicMap().geoToScreen(new PVector(x, y));
 
         getThematicMap().getParent().ellipse(screen.x, screen.y, 2, 2);
+    }
+
+    public void draw(PGraphics g)
+    {
+        // TODO
     }
 
     public FeatureType getFeatureType()

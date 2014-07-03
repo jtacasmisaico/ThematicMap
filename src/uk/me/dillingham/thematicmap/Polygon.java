@@ -5,6 +5,7 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PConstants;
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 /**
@@ -76,6 +77,37 @@ public class Polygon extends Feature
             if (segmentType == PathIterator.SEG_CLOSE)
             {
                 getThematicMap().getParent().endShape(PConstants.CLOSE);
+            }
+
+            iterator.next();
+        }
+    }
+
+    public void draw(PGraphics g)
+    {
+        PathIterator iterator = path.getPathIterator(null);
+
+        float[] geo = new float[6];
+
+        while (!iterator.isDone())
+        {
+            int segmentType = iterator.currentSegment(geo);
+
+            if (segmentType == PathIterator.SEG_MOVETO)
+            {
+                g.beginShape();
+            }
+
+            if (segmentType == PathIterator.SEG_MOVETO || segmentType == PathIterator.SEG_LINETO)
+            {
+                PVector screen = getThematicMap().geoToScreen(new PVector(geo[0], geo[1]));
+
+                g.vertex(screen.x, screen.y);
+            }
+
+            if (segmentType == PathIterator.SEG_CLOSE)
+            {
+                g.endShape(PConstants.CLOSE);
             }
 
             iterator.next();
