@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
 import processing.data.Table;
 import uk.me.dillingham.thematicmap.io.ShpFile;
@@ -144,9 +145,21 @@ public class ThematicMap
      */
     public void draw()
     {
+        draw(getGraphics());
+    }
+
+    /**
+     * Draws the thematic map using the given graphics context. If the bounds of the thematic map in geographic
+     * coordinates and in screen coordinates have not been set by {@link #setGeoBounds(Rectangle2D)} and
+     * {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be those of the features read from the
+     * shapefile and the screen bounds will be those of the parent sketch.
+     * @param g The graphics context.
+     */
+    public void draw(PGraphics g)
+    {
         for (Feature feature : features)
         {
-            feature.draw();
+            feature.draw(g);
         }
     }
 
@@ -159,7 +172,20 @@ public class ThematicMap
      */
     public void draw(int featureIndex)
     {
-        features.get(featureIndex).draw();
+        draw(featureIndex, getGraphics());
+    }
+
+    /**
+     * Draws the feature with the given index using the given graphics context. Features are zero-indexed. If the bounds
+     * of the thematic map in geographic coordinates and in screen coordinates have not been set by
+     * {@link #setGeoBounds(Rectangle2D)} and {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be those
+     * of the features read from the shapefile and the screen bounds will be those of the parent sketch.
+     * @param featureIndex The index of the feature. Features are zero-indexed.
+     * @param g The graphics context.
+     */
+    public void draw(int featureIndex, PGraphics g)
+    {
+        features.get(featureIndex).draw(g);
     }
 
     /**
@@ -258,6 +284,11 @@ public class ThematicMap
         this.geoBounds = geoBounds;
     }
 
+    public PGraphics getGraphics()
+    {
+        return p.g;
+    }
+
     /**
      * Gets the parent sketch.
      * @return The parent sketch.
@@ -265,15 +296,6 @@ public class ThematicMap
     public PApplet getParent()
     {
         return p;
-    }
-
-    /**
-     * Sets the parent sketch.
-     * @param p The parent sketch.
-     */
-    public void setParent(PApplet p)
-    {
-        this.p = p;
     }
 
     /**

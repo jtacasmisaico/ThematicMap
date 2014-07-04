@@ -2,6 +2,8 @@ package uk.me.dillingham.thematicmap;
 
 import java.awt.geom.Rectangle2D;
 
+import processing.core.PGraphics;
+
 import com.vividsolutions.jts.awt.ShapeWriter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -45,9 +47,15 @@ public abstract class Feature
     }
 
     /**
-     * Draws the feature within the associated thematic map.
+     * Draws the feature.
      */
     public abstract void draw();
+
+    /**
+     * Draws the feature using the given graphics context.
+     * @param g The graphics context.
+     */
+    public abstract void draw(PGraphics g);
 
     /**
      * Gets the index associated with the feature.

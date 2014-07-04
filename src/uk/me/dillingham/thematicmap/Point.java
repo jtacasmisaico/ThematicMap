@@ -1,5 +1,6 @@
 package uk.me.dillingham.thematicmap;
 
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -30,13 +31,18 @@ public class Point extends Feature
 
     public void draw()
     {
+        draw(getThematicMap().getGraphics());
+    }
+
+    public void draw(PGraphics g)
+    {
         for (int i = 0; i < getGeometry().getNumGeometries(); i++)
         {
             Coordinate geo = getGeometry().getGeometryN(i).getCoordinate();
 
             PVector screen = getThematicMap().geoToScreen(new PVector((float) geo.x, (float) geo.y));
 
-            getThematicMap().getParent().ellipse(screen.x, screen.y, 2, 2);
+            g.ellipse(screen.x, screen.y, 2, 2);
         }
     }
 
