@@ -1,7 +1,6 @@
 package uk.me.dillingham.thematicmap.sketches;
 
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 
 import processing.core.PApplet;
 import uk.me.dillingham.thematicmap.ThematicMap;
@@ -27,7 +26,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         countriesLakes.setScreenBounds(screenBounds);
 
-        countriesLakes.read("ne_110m_admin_0_countries_lakes" + File.separator + "ne_110m_admin_0_countries_lakes");
+        countriesLakes.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
 
         // Initialise map
 
@@ -47,7 +46,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         populatedPlaces.setScreenBounds(screenBounds);
 
-        populatedPlaces.read("ne_110m_populated_places" + File.separator + "ne_110m_populated_places");
+        populatedPlaces.read("ne_110m_populated_places/ne_110m_populated_places.shp");
 
         textAlign(LEFT, TOP);
 
