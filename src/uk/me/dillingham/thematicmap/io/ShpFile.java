@@ -15,6 +15,7 @@ import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -196,9 +197,28 @@ public class ShpFile
 
     private Geometry readShapefilePolyLine(ByteBuffer byteBuffer)
     {
-        // TODO
+        int numParts = byteBuffer.getInt(36);
 
-        return null;
+        int numPoints = byteBuffer.getInt(40);
+
+        int[] parts = getParts(byteBuffer, numParts); // Index to first point in part
+
+        Coordinate[] points = getPoints(byteBuffer, numPoints);
+
+        List<LineString> lineStrings = new ArrayList<LineString>(numParts);
+
+        for (int i = 0; i < numParts; i++)
+        {
+            int from = parts[i];
+
+            int to = i + 1 < numParts ? parts[i + 1] : numPoints;
+
+            Coordinate[] partPoints = Arrays.copyOfRange(points, from, to);
+
+            lineStrings.add(geometryFactory.createLineString(partPoints));
+        }
+
+        return geometryFactory.buildGeometry(lineStrings);
     }
 
     private Geometry readShapefilePolygon(ByteBuffer byteBuffer)
@@ -286,5 +306,35 @@ public class ShpFile
         }
 
         return geometryFactory.buildGeometry(polygons);
+    }
+
+    private int[] getParts(ByteBuffer byteBuffer, int numParts)
+    {
+        byteBuffer.position(44);
+
+        int[] parts = new int[numParts]; // Index to first point in part
+
+        for (int i = 0; i < numParts; i++)
+        {
+            parts[i] = byteBuffer.getInt();
+        }
+
+        return parts;
+    }
+
+    private Coordinate[] getPoints(ByteBuffer byteBuffer, int numPoints)
+    {
+        Coordinate[] points = new Coordinate[numPoints];
+
+        for (int i = 0; i < numPoints; i++)
+        {
+            double x = byteBuffer.getDouble();
+
+            double y = byteBuffer.getDouble();
+
+            points[i] = new Coordinate(x, y);
+        }
+
+        return points;
     }
 }
