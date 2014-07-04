@@ -59,9 +59,9 @@ public class ThematicMapLayersSketch extends PApplet
 
         // Draw map
 
-        fill(224);
+        fill(240);
 
-        stroke(150);
+        stroke(189);
 
         strokeWeight(0.5f);
 
@@ -69,9 +69,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         // Draw map
 
-        stroke(247);
-
-        boundaryLines.draw();
+        // boundaryLines.draw();
 
         // Draw map
 
@@ -85,7 +83,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         noFill();
 
-        stroke(128);
+        stroke(99);
 
         Rectangle2D screenBounds = countriesLakes.getScreenBounds();
 
@@ -104,13 +102,21 @@ public class ThematicMapLayersSketch extends PApplet
             {
                 noStroke();
 
-                fill(128);
+                fill(99);
 
                 text(countriesLakes.getAttributeTable().getString(featureIndex, 3), minX + 2, minY);
             }
         }
 
         noLoop();
+    }
+
+    public void keyPressed()
+    {
+        if (key == 's')
+        {
+            save("img/ThematicMapLayersSketch.png");
+        }
     }
 
     public void mouseMoved()
