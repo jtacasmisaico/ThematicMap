@@ -1,7 +1,6 @@
 package uk.me.dillingham.thematicmap.sketches;
 
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -18,7 +17,7 @@ public class ThematicMapSketch extends PApplet
 
         thematicMap = new ThematicMap(this);
 
-        thematicMap.read("ne_110m_admin_0_countries_lakes" + File.separator + "ne_110m_admin_0_countries_lakes");
+        thematicMap.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
 
         thematicMap.setGeoBounds(new Rectangle2D.Float(-180, -90, 360, 180));
 
