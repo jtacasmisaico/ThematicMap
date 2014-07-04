@@ -227,25 +227,9 @@ public class ShpFile
 
         int numPoints = byteBuffer.getInt(40);
 
-        byteBuffer.position(44);
+        int[] parts = getParts(byteBuffer, numParts); // Index to first point in part
 
-        int[] parts = new int[numParts]; // Index to first point in part
-
-        for (int i = 0; i < numParts; i++)
-        {
-            parts[i] = byteBuffer.getInt();
-        }
-
-        Coordinate[] points = new Coordinate[numPoints];
-
-        for (int i = 0; i < numPoints; i++)
-        {
-            double x = byteBuffer.getDouble();
-
-            double y = byteBuffer.getDouble();
-
-            points[i] = new Coordinate(x, y);
-        }
+        Coordinate[] points = getPoints(byteBuffer, numPoints);
 
         List<LinearRing> interiorParts = new ArrayList<LinearRing>();
 
