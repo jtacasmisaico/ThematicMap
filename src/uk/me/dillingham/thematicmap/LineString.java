@@ -1,5 +1,6 @@
 package uk.me.dillingham.thematicmap;
 
+import processing.core.PConstants;
 import processing.core.PVector;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -32,7 +33,7 @@ public class LineString extends Feature
     {
         for (int i = 0; i < getGeometry().getNumGeometries(); i++)
         {
-            getThematicMap().getParent().beginShape();
+            getThematicMap().getParent().beginShape(PConstants.LINES);
 
             Coordinate[] coordinates = getGeometry().getGeometryN(i).getCoordinates();
 
