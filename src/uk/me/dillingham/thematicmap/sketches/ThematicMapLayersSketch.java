@@ -8,7 +8,7 @@ import uk.me.dillingham.thematicmap.ThematicMap;
 @SuppressWarnings("serial")
 public class ThematicMapLayersSketch extends PApplet
 {
-    ThematicMap countriesLakes, boundaryLines, populatedPlaces;
+    ThematicMap countriesLakes, populatedPlaces;
 
     public void setup()
     {
@@ -27,16 +27,6 @@ public class ThematicMapLayersSketch extends PApplet
         countriesLakes.setScreenBounds(screenBounds);
 
         countriesLakes.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
-
-        // Initialise map
-
-        boundaryLines = new ThematicMap(this);
-
-        boundaryLines.setGeoBounds(geoBounds);
-
-        boundaryLines.setScreenBounds(screenBounds);
-
-        boundaryLines.read("ne_110m_admin_0_boundary_lines_land/ne_110m_admin_0_boundary_lines_land.shp");
 
         // Initialise map
 
@@ -66,12 +56,6 @@ public class ThematicMapLayersSketch extends PApplet
         strokeWeight(0.5f);
 
         countriesLakes.draw();
-
-        // Draw map
-
-        // boundaryLines.draw();
-
-        // Draw map
 
         fill(222, 45, 38);
 
