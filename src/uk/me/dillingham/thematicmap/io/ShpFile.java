@@ -43,9 +43,9 @@ public class ShpFile
         }
     };
 
-    public ShpFile()
+    public ShpFile(GeometryFactory geometryFactory)
     {
-        geometryFactory = new GeometryFactory();
+        this.geometryFactory = geometryFactory;
 
         geometries = new ArrayList<Geometry>();
     }
@@ -121,16 +121,6 @@ public class ShpFile
         }
 
         inputStream.close();
-    }
-
-    public GeometryFactory getGeometryFactory()
-    {
-        return geometryFactory;
-    }
-
-    public void setGeometryFactory(GeometryFactory geometryFactory)
-    {
-        this.geometryFactory = geometryFactory;
     }
 
     public List<Geometry> getGeometries()
