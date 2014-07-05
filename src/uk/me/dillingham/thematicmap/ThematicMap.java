@@ -51,7 +51,7 @@ public class ThematicMap
     /**
      * Reads geometry and attributes from the given shapefile. A shapefile consists of a main file (.shp), an index file
      * (.shx), and dBASE table (.dbf).
-     * @param shapefile The name of the shapefile.
+     * @param shapefile The shapefile.
      */
     public void read(String shapefile)
     {
