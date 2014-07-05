@@ -154,21 +154,59 @@ public class ThematicMap
      */
     public void draw(int featureIndex, PGraphics g)
     {
-        Geometry geometry = geometries.get(featureIndex);
+        draw(geometries.get(featureIndex), g);
+    }
 
+    private void draw(Geometry geometry, PGraphics g)
+    {
         if (geometry.getGeometryType().equals("Point") || geometry.getGeometryType().equals("MultiPoint"))
         {
-            drawPoint(geometry, g);
+            for (int i = 0; i < geometry.getNumGeometries(); i++)
+            {
+                Coordinate geoPoint = geometry.getGeometryN(i).getCoordinate();
+
+                PVector screenPoint = geoToScreen(new PVector((float) geoPoint.x, (float) geoPoint.y));
+
+                g.ellipse(screenPoint.x, screenPoint.y, 2, 2);
+            }
         }
 
         if (geometry.getGeometryType().equals("LineString") || geometry.getGeometryType().equals("MultiLineString"))
         {
-            drawLineString(geometry, g);
+            for (int i = 0; i < geometry.getNumGeometries(); i++)
+            {
+                g.beginShape(PConstants.LINES);
+
+                Coordinate[] coordinates = geometry.getGeometryN(i).getCoordinates();
+
+                for (Coordinate coordinate : coordinates)
+                {
+                    PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
+
+                    g.vertex(screen.x, screen.y);
+                }
+
+                g.endShape();
+            }
         }
 
         if (geometry.getGeometryType().equals("Polygon") || geometry.getGeometryType().equals("MultiPolygon"))
         {
-            drawPolygon(geometry, g);
+            for (int i = 0; i < geometry.getNumGeometries(); i++)
+            {
+                g.beginShape(PConstants.POLYGON);
+
+                Coordinate[] coordinates = geometry.getGeometryN(i).getCoordinates();
+
+                for (Coordinate coordinate : coordinates)
+                {
+                    PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
+
+                    g.vertex(screen.x, screen.y);
+                }
+
+                g.endShape(PConstants.CLOSE);
+            }
         }
     }
 
@@ -278,55 +316,5 @@ public class ThematicMap
         }
 
         return -1;
-    }
-
-    private void drawPoint(Geometry geometry, PGraphics g)
-    {
-        for (int i = 0; i < geometry.getNumGeometries(); i++)
-        {
-            Coordinate geoPoint = geometry.getGeometryN(i).getCoordinate();
-
-            PVector screenPoint = geoToScreen(new PVector((float) geoPoint.x, (float) geoPoint.y));
-
-            g.ellipse(screenPoint.x, screenPoint.y, 2, 2);
-        }
-    }
-
-    private void drawLineString(Geometry geometry, PGraphics g)
-    {
-        for (int i = 0; i < geometry.getNumGeometries(); i++)
-        {
-            g.beginShape(PConstants.LINES);
-
-            Coordinate[] coordinates = geometry.getGeometryN(i).getCoordinates();
-
-            for (Coordinate coordinate : coordinates)
-            {
-                PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
-
-                g.vertex(screen.x, screen.y);
-            }
-
-            g.endShape();
-        }
-    }
-
-    private void drawPolygon(Geometry geometry, PGraphics g)
-    {
-        for (int i = 0; i < geometry.getNumGeometries(); i++)
-        {
-            g.beginShape(PConstants.POLYGON);
-
-            Coordinate[] coordinates = geometry.getGeometryN(i).getCoordinates();
-
-            for (Coordinate coordinate : coordinates)
-            {
-                PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
-
-                g.vertex(screen.x, screen.y);
-            }
-
-            g.endShape(PConstants.CLOSE);
-        }
     }
 }
