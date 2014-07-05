@@ -16,6 +16,8 @@ import uk.me.dillingham.thematicmap.io.ShpFile;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.util.AffineTransformation;
+import com.vividsolutions.jts.geom.util.NoninvertibleTransformationException;
 
 /**
  * Class to draw a thematic map in Processing.
@@ -27,6 +29,7 @@ public class ThematicMap
     private List<Geometry> geometries;
     private Table attributeTable;
     private Rectangle2D geoBounds, screenBounds;
+    AffineTransformation geoToScreen, screenToGeo;
     private PApplet p;
 
     /**
@@ -44,6 +47,10 @@ public class ThematicMap
         geoBounds = null; // TODO
 
         screenBounds = null; // TODO
+
+        geoToScreen = null; // TODO
+
+        screenToGeo = null; // TODO
 
         this.p = p;
     }
@@ -163,11 +170,9 @@ public class ThematicMap
         {
             for (int i = 0; i < geometry.getNumGeometries(); i++)
             {
-                Coordinate geoPoint = geometry.getGeometryN(i).getCoordinate();
+                Coordinate screen = geoToScreen.transform(geometry.getGeometryN(i).getCoordinate(), new Coordinate());
 
-                PVector screenPoint = geoToScreen(new PVector((float) geoPoint.x, (float) geoPoint.y));
-
-                g.ellipse(screenPoint.x, screenPoint.y, 2, 2);
+                g.ellipse((float) screen.x, (float) screen.y, 2, 2);
             }
         }
 
@@ -181,9 +186,9 @@ public class ThematicMap
 
                 for (Coordinate coordinate : coordinates)
                 {
-                    PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
+                    Coordinate screen = geoToScreen.transform(coordinate, new Coordinate());
 
-                    g.vertex(screen.x, screen.y);
+                    g.vertex((float) screen.x, (float) screen.y);
                 }
 
                 g.endShape();
@@ -200,12 +205,49 @@ public class ThematicMap
 
                 for (Coordinate coordinate : coordinates)
                 {
-                    PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
+                    Coordinate screen = geoToScreen.transform(coordinate, new Coordinate());
 
-                    g.vertex(screen.x, screen.y);
+                    g.vertex((float) screen.x, (float) screen.y);
                 }
 
                 g.endShape(PConstants.CLOSE);
+            }
+        }
+    }
+
+    private void setTransformations(Rectangle2D geoBounds, Rectangle2D screenBounds)
+    {
+        if (geoBounds == null || screenBounds == null)
+        {
+            geoToScreen = null;
+
+            screenToGeo = null;
+        }
+        else
+        {
+            try
+            {
+                // Unlike AWT AffineTransform, JTS AffineTransformation operations are specified in the correct order.
+
+                geoToScreen = new AffineTransformation();
+
+                geoToScreen.translate(-geoBounds.getX(), -geoBounds.getY());
+
+                double scaleX = screenBounds.getWidth() / geoBounds.getWidth();
+
+                double scaleY = screenBounds.getHeight() / geoBounds.getHeight();
+
+                geoToScreen.scale(scaleX, scaleY);
+
+                geoToScreen.reflect(1, 0);
+
+                geoToScreen.translate(screenBounds.getX(), screenBounds.getY() + screenBounds.getHeight());
+
+                screenToGeo = geoToScreen.getInverse();
+            }
+            catch (NoninvertibleTransformationException e)
+            {
+                e.printStackTrace();
             }
         }
     }
@@ -219,13 +261,9 @@ public class ThematicMap
      */
     public PVector geoToScreen(PVector geoPoint)
     {
-        float screenX = PApplet.map(geoPoint.x, (float) geoBounds.getMinX(), (float) geoBounds.getMaxX(),
-                (float) screenBounds.getMinX(), (float) screenBounds.getMaxX());
+        Coordinate screenPoint = geoToScreen.transform(new Coordinate(geoPoint.x, geoPoint.y), new Coordinate());
 
-        float screenY = PApplet.map(geoPoint.y, (float) geoBounds.getMinY(), (float) geoBounds.getMaxY(),
-                (float) screenBounds.getMaxY(), (float) screenBounds.getMinY());
-
-        return new PVector(screenX, screenY);
+        return new PVector((float) screenPoint.x, (float) screenPoint.y);
     }
 
     /**
@@ -237,13 +275,9 @@ public class ThematicMap
      */
     public PVector screenToGeo(PVector screenPoint)
     {
-        float geoX = PApplet.map(screenPoint.x, (float) screenBounds.getMinX(), (float) screenBounds.getMaxX(),
-                (float) geoBounds.getMinX(), (float) geoBounds.getMaxX());
+        Coordinate geoPoint = screenToGeo.transform(new Coordinate(screenPoint.x, screenPoint.y), new Coordinate());
 
-        float geoY = PApplet.map(screenPoint.y, (float) screenBounds.getMinY(), (float) screenBounds.getMaxY(),
-                (float) geoBounds.getMaxY(), (float) geoBounds.getMinY());
-
-        return new PVector(geoX, geoY);
+        return new PVector((float) geoPoint.x, (float) geoPoint.y);
     }
 
     /**
@@ -263,6 +297,8 @@ public class ThematicMap
     public void setGeoBounds(Rectangle2D geoBounds)
     {
         this.geoBounds = geoBounds;
+
+        setTransformations(this.geoBounds, this.screenBounds);
     }
 
     /**
@@ -282,6 +318,8 @@ public class ThematicMap
     public void setScreenBounds(Rectangle2D screenBounds)
     {
         this.screenBounds = screenBounds;
+
+        setTransformations(this.geoBounds, this.screenBounds);
     }
 
     /**
