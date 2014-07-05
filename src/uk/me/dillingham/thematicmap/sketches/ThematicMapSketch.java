@@ -13,13 +13,11 @@ public class ThematicMapSketch extends PApplet
 
     public void setup()
     {
-        size(740, 380);
+        size(750, 380);
 
         thematicMap = new ThematicMap(this);
 
         thematicMap.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
-
-        thematicMap.setGeoBounds(new Rectangle2D.Float(-180, -90, 360, 180));
 
         thematicMap.setScreenBounds(new Rectangle2D.Float(10, 10, 720, 360));
 
@@ -36,9 +34,9 @@ public class ThematicMapSketch extends PApplet
 
         // Draw map
 
-        fill(224);
+        fill(240);
 
-        stroke(255);
+        stroke(189);
 
         strokeWeight(0.5f);
 
@@ -46,7 +44,7 @@ public class ThematicMapSketch extends PApplet
 
         // Draw highlighted feature
 
-        fill(128);
+        fill(189);
 
         thematicMap.draw(168); // USA
 
@@ -54,7 +52,7 @@ public class ThematicMapSketch extends PApplet
 
         noFill();
 
-        stroke(128);
+        stroke(99);
 
         Rectangle2D screenBounds = thematicMap.getScreenBounds();
 
@@ -78,12 +76,17 @@ public class ThematicMapSketch extends PApplet
         {
             PVector geo = thematicMap.screenToGeo(new PVector(mouseX, mouseY));
 
-            fill(128);
+            fill(99);
 
             text("[" + nfp(geo.x, 3, 2) + ", " + nfp(geo.y, 2, 2) + "]", minX + 2, minY);
         }
 
         noLoop();
+    }
+
+    public void keyPressed()
+    {
+        save("img/ThematicMapSketch.png");
     }
 
     public void mouseMoved()
