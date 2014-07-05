@@ -9,11 +9,14 @@ import uk.me.dillingham.thematicmap.ThematicMap;
 @SuppressWarnings("serial")
 public class ThematicMapSketch extends PApplet
 {
+    boolean isCentreLines;
     ThematicMap thematicMap;
 
     public void setup()
     {
         size(750, 380);
+
+        isCentreLines = false;
 
         thematicMap = new ThematicMap(this);
 
@@ -64,9 +67,12 @@ public class ThematicMapSketch extends PApplet
         float maxX = (float) screenBounds.getMaxX();
         float maxY = (float) screenBounds.getMaxY();
 
-        line(centerX, minY, centerX, maxY); // Vertical centre line
+        if (isCentreLines)
+        {
+            line(centerX, minY, centerX, maxY); // Vertical centre line
 
-        line(minX, centerY, maxX, centerY); // Horizontal centre line
+            line(minX, centerY, maxX, centerY); // Horizontal centre line
+        }
 
         rect(minX, minY, (float) screenBounds.getWidth(), (float) screenBounds.getHeight()); // Border
 
@@ -86,7 +92,17 @@ public class ThematicMapSketch extends PApplet
 
     public void keyPressed()
     {
-        save("img/ThematicMapSketch.png");
+        if (key == ' ')
+        {
+            isCentreLines = !isCentreLines;
+        }
+
+        if (key == 's')
+        {
+            save("img/ThematicMapSketch.png");
+        }
+
+        loop();
     }
 
     public void mouseMoved()
