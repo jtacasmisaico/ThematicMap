@@ -29,7 +29,7 @@ public class ThematicMap
     private List<Geometry> geometries;
     private Table attributeTable;
     private Rectangle2D geoBounds, screenBounds;
-    AffineTransformation geoToScreen, screenToGeo;
+    private AffineTransformation geoToScreen, screenToGeo;
     private PApplet p;
 
     /**
@@ -44,13 +44,11 @@ public class ThematicMap
 
         attributeTable = new Table();
 
-        geoBounds = null; // TODO
+        geoBounds = new Rectangle2D.Float(-180, -90, 360, 180);
 
-        screenBounds = null; // TODO
+        screenBounds = new Rectangle2D.Float(0, 0, 360, 180);
 
-        geoToScreen = null; // TODO
-
-        screenToGeo = null; // TODO
+        setTransformations(geoBounds, screenBounds);
 
         this.p = p;
     }
@@ -217,38 +215,29 @@ public class ThematicMap
 
     private void setTransformations(Rectangle2D geoBounds, Rectangle2D screenBounds)
     {
-        if (geoBounds == null || screenBounds == null)
+        try
         {
-            geoToScreen = null;
+            // Unlike AWT AffineTransform, JTS AffineTransformation operations are specified in the correct order.
 
-            screenToGeo = null;
+            geoToScreen = new AffineTransformation();
+
+            geoToScreen.translate(-geoBounds.getX(), -geoBounds.getY());
+
+            double scaleX = screenBounds.getWidth() / geoBounds.getWidth();
+
+            double scaleY = screenBounds.getHeight() / geoBounds.getHeight();
+
+            geoToScreen.scale(scaleX, scaleY);
+
+            geoToScreen.reflect(1, 0);
+
+            geoToScreen.translate(screenBounds.getX(), screenBounds.getY() + screenBounds.getHeight());
+
+            screenToGeo = geoToScreen.getInverse();
         }
-        else
+        catch (NoninvertibleTransformationException e)
         {
-            try
-            {
-                // Unlike AWT AffineTransform, JTS AffineTransformation operations are specified in the correct order.
-
-                geoToScreen = new AffineTransformation();
-
-                geoToScreen.translate(-geoBounds.getX(), -geoBounds.getY());
-
-                double scaleX = screenBounds.getWidth() / geoBounds.getWidth();
-
-                double scaleY = screenBounds.getHeight() / geoBounds.getHeight();
-
-                geoToScreen.scale(scaleX, scaleY);
-
-                geoToScreen.reflect(1, 0);
-
-                geoToScreen.translate(screenBounds.getX(), screenBounds.getY() + screenBounds.getHeight());
-
-                screenToGeo = geoToScreen.getInverse();
-            }
-            catch (NoninvertibleTransformationException e)
-            {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
     }
 
