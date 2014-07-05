@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PVector;
 import processing.data.Table;
 import uk.me.dillingham.thematicmap.io.ShpFile;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Class to draw a thematic map in Processing.
@@ -20,7 +23,8 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class ThematicMap
 {
-    private List<Feature> features;
+    private GeometryFactory geometryFactory;
+    private List<Geometry> geometries;
     private Table attributeTable;
     private Rectangle2D geoBounds, screenBounds;
     private PApplet p;
@@ -31,13 +35,15 @@ public class ThematicMap
      */
     public ThematicMap(PApplet p)
     {
-        features = new ArrayList<Feature>();
+        geometryFactory = new GeometryFactory();
+
+        geometries = new ArrayList<Geometry>();
 
         attributeTable = new Table();
 
-        geoBounds = null;
+        geoBounds = null; // TODO
 
-        screenBounds = null;
+        screenBounds = null; // TODO
 
         this.p = p;
     }
@@ -65,33 +71,11 @@ public class ThematicMap
         {
             try
             {
-                ShpFile shpFile = new ShpFile();
+                ShpFile shpFile = new ShpFile(geometryFactory);
 
                 shpFile.read(shpFileInputStream);
 
-                List<Geometry> geometries = shpFile.getGeometries();
-
-                for (int i = 0; i < geometries.size(); i++)
-                {
-                    Geometry geometry = geometries.get(i);
-
-                    String geometryType = geometry.getGeometryType();
-
-                    if (geometryType.equals("Point") || geometryType.equals("MultiPoint"))
-                    {
-                        features.add(new Point(i, geometry, this));
-                    }
-
-                    if (geometryType.equals("LineString") | geometryType.equals("MultiLineString"))
-                    {
-                        features.add(new LineString(i, geometry, this));
-                    }
-
-                    if (geometryType.equals("Polygon") || geometryType.equals("MultiPolygon"))
-                    {
-                        features.add(new Polygon(i, geometry, this));
-                    }
-                }
+                geometries = shpFile.getGeometries();
             }
             catch (IOException e)
             {
@@ -120,21 +104,6 @@ public class ThematicMap
                 e.printStackTrace();
             }
         }
-
-        if (geoBounds == null)
-        {
-            geoBounds = features.get(0).getGeoBounds();
-
-            for (Feature feature : features)
-            {
-                geoBounds.add(feature.getGeoBounds());
-            }
-        }
-
-        if (screenBounds == null)
-        {
-            screenBounds = new Rectangle2D.Float(0, 0, p.width, p.height);
-        }
     }
 
     /**
@@ -145,7 +114,7 @@ public class ThematicMap
      */
     public void draw()
     {
-        draw(getGraphics());
+        draw(p.g);
     }
 
     /**
@@ -157,9 +126,9 @@ public class ThematicMap
      */
     public void draw(PGraphics g)
     {
-        for (Feature feature : features)
+        for (int i = 0; i < geometries.size(); i++)
         {
-            feature.draw(g);
+            draw(i, g);
         }
     }
 
@@ -172,7 +141,7 @@ public class ThematicMap
      */
     public void draw(int featureIndex)
     {
-        draw(featureIndex, getGraphics());
+        draw(featureIndex, p.g);
     }
 
     /**
@@ -185,30 +154,22 @@ public class ThematicMap
      */
     public void draw(int featureIndex, PGraphics g)
     {
-        features.get(featureIndex).draw(g);
-    }
+        Geometry geometry = geometries.get(featureIndex);
 
-    /**
-     * Gets the index of the feature located at the given screen point. This method will return -1 if no feature is
-     * located at the given screen point. If more than one feature is located at the given screen point, this method
-     * will return the index of the first feature located at the given screen point.
-     * @param x The x coordinate of the point in screen coordinates.
-     * @param y The y coordinate of the point in screen coordinates.
-     * @return The index of the feature located at the given screen point or -1.
-     */
-    public int getFeatureIndex(float x, float y)
-    {
-        PVector geoPoint = screenToGeo(new PVector(x, y));
-
-        for (Feature feature : features)
+        if (geometry.getGeometryType().equals("Point") || geometry.getGeometryType().equals("MultiPoint"))
         {
-            if (feature.contains(geoPoint.x, geoPoint.y))
-            {
-                return feature.getFeatureIndex();
-            }
+            drawPoint(geometry, g);
         }
 
-        return -1;
+        if (geometry.getGeometryType().equals("LineString") || geometry.getGeometryType().equals("MultiLineString"))
+        {
+            drawLineString(geometry, g);
+        }
+
+        if (geometry.getGeometryType().equals("Polygon") || geometry.getGeometryType().equals("MultiPolygon"))
+        {
+            drawPolygon(geometry, g);
+        }
     }
 
     /**
@@ -248,24 +209,6 @@ public class ThematicMap
     }
 
     /**
-     * Gets the attribute table.
-     * @return The attribute table.
-     */
-    public Table getAttributeTable()
-    {
-        return attributeTable;
-    }
-
-    /**
-     * Sets the attribute table to the given attribute table.
-     * @param attributeTable The attribute table.
-     */
-    public void setAttributeTable(Table attributeTable)
-    {
-        this.attributeTable = attributeTable;
-    }
-
-    /**
      * Gets the bounds of the thematic map in geographic coordinates. This method will return null if called before
      * either {@link #read(String)} or {@link #setGeoBounds(Rectangle2D)}.
      * @return The bounds of the thematic map in geographic coordinates or null.
@@ -282,20 +225,6 @@ public class ThematicMap
     public void setGeoBounds(Rectangle2D geoBounds)
     {
         this.geoBounds = geoBounds;
-    }
-
-    public PGraphics getGraphics()
-    {
-        return p.g;
-    }
-
-    /**
-     * Gets the parent sketch.
-     * @return The parent sketch.
-     */
-    public PApplet getParent()
-    {
-        return p;
     }
 
     /**
@@ -315,5 +244,89 @@ public class ThematicMap
     public void setScreenBounds(Rectangle2D screenBounds)
     {
         this.screenBounds = screenBounds;
+    }
+
+    /**
+     * Gets the attribute table.
+     * @return The attribute table.
+     */
+    public Table getAttributeTable()
+    {
+        return attributeTable;
+    }
+
+    /**
+     * Gets the index of the feature located at the given screen point. This method will return -1 if no feature is
+     * located at the given screen point. If more than one feature is located at the given screen point, this method
+     * will return the index of the first feature located at the given screen point.
+     * @param x The x coordinate of the point in screen coordinates.
+     * @param y The y coordinate of the point in screen coordinates.
+     * @return The index of the feature located at the given screen point or -1.
+     */
+    public int getFeatureIndex(float x, float y)
+    {
+        PVector geoPoint = screenToGeo(new PVector(x, y));
+
+        Geometry geometry = geometryFactory.createPoint(new Coordinate(geoPoint.x, geoPoint.y));
+
+        for (int i = 0; i < geometries.size(); i++)
+        {
+            if (geometries.get(i).contains(geometry))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private void drawPoint(Geometry geometry, PGraphics g)
+    {
+        for (int i = 0; i < geometry.getNumGeometries(); i++)
+        {
+            Coordinate geoPoint = geometry.getGeometryN(i).getCoordinate();
+
+            PVector screenPoint = geoToScreen(new PVector((float) geoPoint.x, (float) geoPoint.y));
+
+            g.ellipse(screenPoint.x, screenPoint.y, 2, 2);
+        }
+    }
+
+    private void drawLineString(Geometry geometry, PGraphics g)
+    {
+        for (int i = 0; i < geometry.getNumGeometries(); i++)
+        {
+            g.beginShape(PConstants.LINES);
+
+            Coordinate[] coordinates = geometry.getGeometryN(i).getCoordinates();
+
+            for (Coordinate coordinate : coordinates)
+            {
+                PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
+
+                g.vertex(screen.x, screen.y);
+            }
+
+            g.endShape();
+        }
+    }
+
+    private void drawPolygon(Geometry geometry, PGraphics g)
+    {
+        for (int i = 0; i < geometry.getNumGeometries(); i++)
+        {
+            g.beginShape(PConstants.POLYGON);
+
+            Coordinate[] coordinates = geometry.getGeometryN(i).getCoordinates();
+
+            for (Coordinate coordinate : coordinates)
+            {
+                PVector screen = geoToScreen(new PVector((float) coordinate.x, (float) coordinate.y));
+
+                g.vertex(screen.x, screen.y);
+            }
+
+            g.endShape(PConstants.CLOSE);
+        }
     }
 }
