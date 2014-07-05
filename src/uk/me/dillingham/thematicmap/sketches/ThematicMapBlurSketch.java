@@ -10,63 +10,55 @@ import uk.me.dillingham.thematicmap.ThematicMap;
 public class ThematicMapBlurSketch extends PApplet
 {
     boolean isBlurred;
-    ThematicMap notNorthAmericaLakes, northAmerica;
-    PGraphics northAmericaGraphics;
+    ThematicMap countriesLakes;
+    PGraphics countriesLakesGraphics;
 
     public void setup()
     {
-        size(740, 380);
+        size(820, 424);
 
         isBlurred = false;
 
-        Rectangle2D.Float geoBounds = new Rectangle2D.Float(-180, -90, 360, 180);
+        // Initialise map
 
-        Rectangle2D.Float screenBounds = new Rectangle2D.Float(10, 10, 720, 360);
+        countriesLakes = new ThematicMap(this);
 
-        notNorthAmericaLakes = new ThematicMap(this);
+        countriesLakes.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes_robinson.shp");
 
-        notNorthAmericaLakes.setGeoBounds(geoBounds);
+        countriesLakes.setGeoBounds(countriesLakes.getMBR());
 
-        notNorthAmericaLakes.setScreenBounds(screenBounds);
-
-        notNorthAmericaLakes.read("ne_110m_admin_0_countries_lakes/Not_North_America.shp");
-
-        northAmerica = new ThematicMap(this);
-
-        northAmerica.setGeoBounds(geoBounds);
-
-        northAmerica.setScreenBounds(screenBounds);
-
-        northAmerica.read("ne_110m_admin_0_countries_lakes/North_America.shp");
+        countriesLakes.setScreenBounds(new Rectangle2D.Float(10, 10, 800, 404));
 
         // Graphics
 
-        northAmericaGraphics = createGraphics(width, height);
+        countriesLakesGraphics = createGraphics(width, height);
 
-        northAmericaGraphics();
+        countriesLakesGraphics();
     }
 
     public void draw()
     {
         background(255);
 
-        fill(222, 235, 247);
+        style(countriesLakesGraphics.getStyle());
 
-        noStroke();
+        for (int featureIndex = 0; featureIndex < countriesLakes.getAttributeTable().getRowCount(); featureIndex++)
+        {
+            if (featureIndex != 8)
+            {
+                countriesLakes.draw(featureIndex);
+            }
+        }
 
-        rect(10, 10, 720, 360); // 'Sea' rectangle
+        image(countriesLakesGraphics, 0, 0);
 
-        style(northAmericaGraphics.getStyle());
-
-        notNorthAmericaLakes.draw();
-
-        image(northAmericaGraphics, 0, 0);
+        // Draw border
 
         noFill();
 
         stroke(99);
 
-        rect(10, 10, 720, 360); // Border rectangle
+        rect(10, 10, 800, 404);
     }
 
     public void keyPressed()
@@ -75,7 +67,7 @@ public class ThematicMapBlurSketch extends PApplet
         {
             isBlurred = !isBlurred;
 
-            northAmericaGraphics();
+            countriesLakesGraphics();
         }
 
         if (key == 's')
@@ -86,26 +78,26 @@ public class ThematicMapBlurSketch extends PApplet
         }
     }
 
-    private void northAmericaGraphics()
+    private void countriesLakesGraphics()
     {
-        northAmericaGraphics.beginDraw();
+        countriesLakesGraphics.beginDraw();
 
-        northAmericaGraphics.background(255, 0); // Alpha should equal zero
+        countriesLakesGraphics.background(255, 0); // Alpha should equal zero
 
-        northAmericaGraphics.fill(229, 245, 224);
+        countriesLakesGraphics.fill(222, 235, 247);
 
-        northAmericaGraphics.stroke(161, 217, 155);
+        countriesLakesGraphics.stroke(49, 130, 189);
 
-        northAmericaGraphics.strokeWeight(0.5f);
+        countriesLakesGraphics.strokeWeight(0.5f);
 
-        northAmerica.draw(northAmericaGraphics);
+        countriesLakes.draw(8, countriesLakesGraphics);
 
         if (isBlurred)
         {
-            northAmericaGraphics.filter(BLUR, 1);
+            countriesLakesGraphics.filter(BLUR, 2);
         }
 
-        northAmericaGraphics.endDraw();
+        countriesLakesGraphics.endDraw();
     }
 
     public static void main(String[] args)
