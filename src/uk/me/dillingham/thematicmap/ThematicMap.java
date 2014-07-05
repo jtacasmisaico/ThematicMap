@@ -13,6 +13,7 @@ import processing.core.PVector;
 import processing.data.Table;
 import uk.me.dillingham.thematicmap.io.ShpFile;
 
+import com.vividsolutions.jts.awt.ShapeWriter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -340,5 +341,19 @@ public class ThematicMap
         }
 
         return -1;
+    }
+
+    /**
+     * Gets the <a href="http://en.wikipedia.org/wiki/Minimum_bounding_rectangle" target="_blank">Minimum Bounding
+     * Rectangle</a> (MBR) of the geometries contained within the thematic map.
+     * @return The MBR of the geometries contained within the thematic map.
+     */
+    public Rectangle2D getMBR()
+    {
+        Geometry geometry = geometryFactory.buildGeometry(geometries).convexHull();
+
+        ShapeWriter shapeWriter = new ShapeWriter();
+
+        return shapeWriter.toShape(geometry).getBounds2D();
     }
 }
