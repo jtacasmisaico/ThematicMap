@@ -12,31 +12,27 @@ public class ThematicMapLayersSketch extends PApplet
 
     public void setup()
     {
-        size(740, 380);
-
-        Rectangle2D.Float geoBounds = new Rectangle2D.Float(-180, -90, 360, 180);
-
-        Rectangle2D.Float screenBounds = new Rectangle2D.Float(10, 10, 720, 360);
+        size(820, 424);
 
         // Initialise map
 
         countriesLakes = new ThematicMap(this);
 
-        countriesLakes.setGeoBounds(geoBounds);
+        countriesLakes.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes_robinson.shp");
 
-        countriesLakes.setScreenBounds(screenBounds);
+        countriesLakes.setGeoBounds(countriesLakes.getMBR());
 
-        countriesLakes.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
+        countriesLakes.setScreenBounds(new Rectangle2D.Float(10, 10, 800, 404));
 
         // Initialise map
 
         populatedPlaces = new ThematicMap(this);
 
-        populatedPlaces.setGeoBounds(geoBounds);
+        populatedPlaces.read("ne_110m_populated_places/ne_110m_populated_places_robinson.shp");
 
-        populatedPlaces.setScreenBounds(screenBounds);
+        populatedPlaces.setGeoBounds(countriesLakes.getGeoBounds());
 
-        populatedPlaces.read("ne_110m_populated_places/ne_110m_populated_places.shp");
+        populatedPlaces.setScreenBounds(countriesLakes.getScreenBounds());
 
         textAlign(LEFT, TOP);
 
