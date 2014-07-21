@@ -14,7 +14,7 @@ public class ThematicMapSketch extends PApplet
 
     public void setup()
     {
-        size(750, 380);
+        size(740, 380);
 
         isCentreLines = false;
 
@@ -22,7 +22,7 @@ public class ThematicMapSketch extends PApplet
 
         thematicMap.read("ne_110m_admin_0_countries_lakes/ne_110m_admin_0_countries_lakes.shp");
 
-        thematicMap.setScreenBounds(new Rectangle2D.Float(10, 10, 720, 360));
+        thematicMap.setWindow(new Rectangle2D.Float(10, 10, 720, 360));
 
         textAlign(LEFT, TOP);
 
@@ -57,15 +57,15 @@ public class ThematicMapSketch extends PApplet
 
         stroke(99);
 
-        Rectangle2D screenBounds = thematicMap.getScreenBounds();
+        Rectangle2D window = thematicMap.getWindow();
 
-        float centerX = (float) screenBounds.getCenterX();
-        float centerY = (float) screenBounds.getCenterY();
+        float centerX = (float) window.getCenterX();
+        float centerY = (float) window.getCenterY();
 
-        float minX = (float) screenBounds.getMinX();
-        float minY = (float) screenBounds.getMinY();
-        float maxX = (float) screenBounds.getMaxX();
-        float maxY = (float) screenBounds.getMaxY();
+        float minX = (float) window.getMinX();
+        float minY = (float) window.getMinY();
+        float maxX = (float) window.getMaxX();
+        float maxY = (float) window.getMaxY();
 
         if (isCentreLines)
         {
@@ -74,11 +74,11 @@ public class ThematicMapSketch extends PApplet
             line(minX, centerY, maxX, centerY); // Horizontal centre line
         }
 
-        rect(minX, minY, (float) screenBounds.getWidth(), (float) screenBounds.getHeight()); // Border
+        rect(minX, minY, (float) window.getWidth(), (float) window.getHeight()); // Border
 
         // Draw text
 
-        if (screenBounds.contains(mouseX, mouseY))
+        if (window.contains(mouseX, mouseY))
         {
             PVector geo = thematicMap.screenToGeo(new PVector(mouseX, mouseY));
 

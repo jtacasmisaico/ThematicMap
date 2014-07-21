@@ -27,7 +27,7 @@ public class ThematicMapBlurSketch extends PApplet
 
         countriesLakes.setGeoBounds(countriesLakes.getMBR());
 
-        countriesLakes.setScreenBounds(new Rectangle2D.Float(10, 10, 800, 404));
+        countriesLakes.setWindow(new Rectangle2D.Float(10, 10, 800, 404));
 
         // Graphics
 

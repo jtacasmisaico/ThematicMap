@@ -22,7 +22,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         countriesLakes.setGeoBounds(countriesLakes.getMBR());
 
-        countriesLakes.setScreenBounds(new Rectangle2D.Float(10, 10, 800, 404));
+        countriesLakes.setWindow(new Rectangle2D.Float(10, 10, width - 20, height - 20));
 
         // Initialise map
 
@@ -32,7 +32,7 @@ public class ThematicMapLayersSketch extends PApplet
 
         populatedPlaces.setGeoBounds(countriesLakes.getGeoBounds());
 
-        populatedPlaces.setScreenBounds(countriesLakes.getScreenBounds());
+        populatedPlaces.setWindow(countriesLakes.getWindow());
 
         textAlign(LEFT, TOP);
 

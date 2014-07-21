@@ -29,7 +29,7 @@ public class ThematicMap
     private GeometryFactory geometryFactory;
     private List<Geometry> geometries;
     private Table attributeTable;
-    private Rectangle2D geoBounds, screenBounds;
+    private Rectangle2D window, geoBounds, screenBounds;
     private AffineTransformation geoToScreen, screenToGeo;
     private PApplet p;
 
@@ -45,9 +45,11 @@ public class ThematicMap
 
         attributeTable = new Table();
 
+        window = new Rectangle2D.Float(0, 0, p.width, p.height);
+
         geoBounds = new Rectangle2D.Float(-180, -90, 360, 180);
 
-        screenBounds = new Rectangle2D.Float(0, 0, 360, 180);
+        setScreenBounds();
 
         setTransformations(geoBounds, screenBounds);
 
@@ -213,6 +215,25 @@ public class ThematicMap
         }
     }
 
+    private void setScreenBounds()
+    {
+        double scaleX = geoBounds.getWidth() / window.getWidth();
+
+        double scaleY = geoBounds.getHeight() / window.getHeight();
+
+        double scale = Math.max(scaleX, scaleY);
+
+        float screenX = (float) window.getX();
+
+        float screenY = (float) window.getY();
+
+        float screenWidth = (float) (geoBounds.getWidth() / scale);
+
+        float screenHeight = (float) (geoBounds.getHeight() / scale);
+
+        screenBounds = new Rectangle2D.Float(screenX, screenY, screenWidth, screenHeight);
+    }
+
     private void setTransformations(Rectangle2D geoBounds, Rectangle2D screenBounds)
     {
         try
@@ -286,6 +307,8 @@ public class ThematicMap
     {
         this.geoBounds = geoBounds;
 
+        setScreenBounds();
+
         setTransformations(this.geoBounds, this.screenBounds);
     }
 
@@ -299,12 +322,23 @@ public class ThematicMap
     }
 
     /**
-     * Sets the bounds of the thematic map in screen coordinates.
-     * @param screenBounds The bounds of the thematic map in screen coordinates.
+     * Gets the window of the thematic map.
+     * @return The window of the thematic map.
      */
-    public void setScreenBounds(Rectangle2D screenBounds)
+    public Rectangle2D getWindow()
     {
-        this.screenBounds = screenBounds;
+        return window;
+    }
+
+    /**
+     * Sets the window of the thematic map to the given window.
+     * @param window The window of the thematic map.
+     */
+    public void setWindow(Rectangle2D window)
+    {
+        this.window = window;
+
+        setScreenBounds();
 
         setTransformations(this.geoBounds, this.screenBounds);
     }
