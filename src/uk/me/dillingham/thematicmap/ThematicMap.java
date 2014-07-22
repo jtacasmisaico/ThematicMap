@@ -395,4 +395,22 @@ public class ThematicMap
 
         return shapeWriter.toShape(geometry).getBounds2D();
     }
+
+    /**
+     * Gets the centroids of the features contained within the thematic map.
+     * @return The centroids of the features contained within the thematic map.
+     */
+    public List<Point2D> getCentroids()
+    {
+        List<Point2D> centroids = new ArrayList<Point2D>(geometries.size());
+
+        for (Geometry geometry : geometries)
+        {
+            Point point = geometry.getCentroid();
+
+            centroids.add(new Point2D.Double(point.getX(), point.getY()));
+        }
+
+        return centroids;
+    }
 }
