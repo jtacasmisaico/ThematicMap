@@ -115,6 +115,15 @@ public class ThematicMap
     }
 
     /**
+     * Loads geometries from the given list of geometries.
+     * @param geometries The list of geometries.
+     */
+    public void load(List<Geometry> geometries)
+    {
+        this.geometries = geometries;
+    }
+
+    /**
      * Draws the thematic map. If the bounds of the thematic map in geographic coordinates have not been set by
      * {@link #setGeoBounds(Rectangle2D)} the geographic bounds will be (-180, -90, 360, 180) (x, y, width, height).
      */
