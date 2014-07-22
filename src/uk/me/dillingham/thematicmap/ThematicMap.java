@@ -311,9 +311,28 @@ public class ThematicMap
      */
     public PVector screenToGeo(PVector screenPoint)
     {
-        Coordinate geoPoint = screenToGeo.transform(new Coordinate(screenPoint.x, screenPoint.y), new Coordinate());
+        Coordinate coordinate = screenToGeo(new Coordinate(screenPoint.x, screenPoint.y));
 
-        return new PVector((float) geoPoint.x, (float) geoPoint.y);
+        return new PVector((float) coordinate.x, (float) coordinate.y);
+    }
+
+    /**
+     * Gets the geographic point that corresponds to the given screen point. This method will return a geographic point
+     * even when the screen point lies outside the screen bounds of the thematic map.
+     * @see #getScreenBounds()
+     * @param screenPoint The screen point.
+     * @return The geographic point.
+     */
+    public Point2D screenToGeo(Point2D screenPoint)
+    {
+        Coordinate coordinate = screenToGeo(new Coordinate(screenPoint.getX(), screenPoint.getY()));
+
+        return new Point2D.Double(coordinate.x, coordinate.y);
+    }
+
+    private Coordinate screenToGeo(Coordinate coordinate)
+    {
+        return screenToGeo.transform(coordinate, new Coordinate());
     }
 
     /**
