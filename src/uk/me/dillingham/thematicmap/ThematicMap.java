@@ -374,6 +374,15 @@ public class ThematicMap
     }
 
     /**
+     * Gets the number of features contained within the thematic map.
+     * @return The number of features contained within the thematic map.
+     */
+    public int getNumFeatures()
+    {
+        return geometries.size();
+    }
+
+    /**
      * Gets the <a href="http://en.wikipedia.org/wiki/Minimum_bounding_rectangle" target="_blank">Minimum Bounding
      * Rectangle</a> (MBR) of the features contained within the thematic map.
      * @return The MBR of the features contained within the thematic map.
