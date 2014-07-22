@@ -383,6 +383,15 @@ public class ThematicMap
     }
 
     /**
+     * Gets the geometry factory associated with the thematic map.
+     * @return The geometry factory associated with the thematic map.
+     */
+    public GeometryFactory getGeometryFactory()
+    {
+        return geometryFactory;
+    }
+
+    /**
      * Gets the <a href="http://en.wikipedia.org/wiki/Minimum_bounding_rectangle" target="_blank">Minimum Bounding
      * Rectangle</a> (MBR) of the features contained within the thematic map.
      * @return The MBR of the features contained within the thematic map.
