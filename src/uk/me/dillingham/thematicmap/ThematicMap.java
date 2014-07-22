@@ -115,9 +115,8 @@ public class ThematicMap
     }
 
     /**
-     * Draws the thematic map. If the bounds of the thematic map in geographic coordinates and in screen coordinates
-     * have not been set by {@link #setGeoBounds(Rectangle2D)} and {@link #setScreenBounds(Rectangle2D)}, the geographic
-     * bounds will be (-180, -90, 360, 180) and the screen bounds will be (0, 0, 360, 180) (x, y, width, height).
+     * Draws the thematic map. If the bounds of the thematic map in geographic coordinates have not been set by
+     * {@link #setGeoBounds(Rectangle2D)} the geographic bounds will be (-180, -90, 360, 180) (x, y, width, height).
      */
     public void draw()
     {
@@ -126,9 +125,8 @@ public class ThematicMap
 
     /**
      * Draws the thematic map using the given graphics context. If the bounds of the thematic map in geographic
-     * coordinates and in screen coordinates have not been set by {@link #setGeoBounds(Rectangle2D)} and
-     * {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be (-180, -90, 360, 180) and the screen bounds
-     * will be (0, 0, 360, 180) (x, y, width, height).
+     * coordinates have not been set by {@link #setGeoBounds(Rectangle2D)} the geographic bounds will be (-180, -90,
+     * 360, 180) (x, y, width, height).
      * @param g The graphics context.
      */
     public void draw(PGraphics g)
@@ -141,9 +139,8 @@ public class ThematicMap
 
     /**
      * Draws the feature with the given index. Features are zero-indexed. If the bounds of the thematic map in
-     * geographic coordinates and in screen coordinates have not been set by {@link #setGeoBounds(Rectangle2D)} and
-     * {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be (-180, -90, 360, 180) and the screen bounds
-     * will be (0, 0, 360, 180) (x, y, width, height).
+     * geographic coordinates have not been set by {@link #setGeoBounds(Rectangle2D)} the geographic bounds will be
+     * (-180, -90, 360, 180) (x, y, width, height).
      * @param featureIndex The index of the feature. Features are zero-indexed.
      */
     public void draw(int featureIndex)
@@ -153,9 +150,8 @@ public class ThematicMap
 
     /**
      * Draws the feature with the given index using the given graphics context. Features are zero-indexed. If the bounds
-     * of the thematic map in geographic coordinates and in screen coordinates have not been set by
-     * {@link #setGeoBounds(Rectangle2D)} and {@link #setScreenBounds(Rectangle2D)}, the geographic bounds will be
-     * (-180, -90, 360, 180) and the screen bounds will be (0, 0, 360, 180) (x, y, width, height).
+     * of the thematic map in geographic coordinates have not been set by {@link #setGeoBounds(Rectangle2D)} the
+     * geographic bounds will be (-180, -90, 360, 180) (x, y, width, height).
      * @param featureIndex The index of the feature. Features are zero-indexed.
      * @param g The graphics context.
      */
@@ -265,7 +261,7 @@ public class ThematicMap
     /**
      * Gets the screen point that corresponds to the given geographic point. This method will return a screen point even
      * when the geographic point lies outside the geographic bounds of the thematic map.
-     * @see getGeoBounds()
+     * @see #getGeoBounds()
      * @param geoPoint The geographic point.
      * @return The screen point.
      */
@@ -279,7 +275,7 @@ public class ThematicMap
     /**
      * Gets the geographic point that corresponds to the given screen point. This method will return a geographic point
      * even when the screen point lies outside the screen bounds of the thematic map.
-     * @see getScreenBounds()
+     * @see #getScreenBounds()
      * @param screenPoint The screen point.
      * @return The geographic point.
      */
