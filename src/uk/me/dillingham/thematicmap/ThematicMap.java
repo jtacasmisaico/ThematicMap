@@ -1,5 +1,6 @@
 package uk.me.dillingham.thematicmap;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import com.vividsolutions.jts.awt.ShapeWriter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.util.AffineTransformation;
 import com.vividsolutions.jts.geom.util.NoninvertibleTransformationException;
 
@@ -276,9 +278,28 @@ public class ThematicMap
      */
     public PVector geoToScreen(PVector geoPoint)
     {
-        Coordinate screenPoint = geoToScreen.transform(new Coordinate(geoPoint.x, geoPoint.y), new Coordinate());
+        Coordinate coordinate = geoToScreen(new Coordinate(geoPoint.x, geoPoint.y));
 
-        return new PVector((float) screenPoint.x, (float) screenPoint.y);
+        return new PVector((float) coordinate.x, (float) coordinate.y);
+    }
+
+    /**
+     * Gets the screen point that corresponds to the given geographic point. This method will return a screen point even
+     * when the geographic point lies outside the geographic bounds of the thematic map.
+     * @see #getGeoBounds()
+     * @param geoPoint The geographic point.
+     * @return The screen point.
+     */
+    public Point2D geoToScreen(Point2D geoPoint)
+    {
+        Coordinate coordinate = geoToScreen(new Coordinate(geoPoint.getX(), geoPoint.getY()));
+
+        return new Point2D.Double(coordinate.x, coordinate.y);
+    }
+
+    private Coordinate geoToScreen(Coordinate coordinate)
+    {
+        return geoToScreen.transform(coordinate, new Coordinate());
     }
 
     /**
