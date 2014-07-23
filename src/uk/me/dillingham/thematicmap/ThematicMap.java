@@ -471,4 +471,22 @@ public class ThematicMap
 
         return centroids;
     }
+    /**
+     * Gets the geometry of the feature with the given index. Features are zero-indexed.
+     * @param featureIndex The index of the feature. Features are zero-indexed.
+     * @return The geometry of the feature with the given index.
+     */
+    public Geometry getGeometry(int featureIndex)
+    {
+        return geometries.get(featureIndex);
+    }
+
+    /**
+     * Gets the geometries contained within the thematic map.
+     * @return The geometries contained within the thematic map.
+     */
+    public List<Geometry> getGeometries()
+    {
+        return geometries;
+    }
 }
