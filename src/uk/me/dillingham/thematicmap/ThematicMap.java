@@ -471,6 +471,45 @@ public class ThematicMap
 
         return centroids;
     }
+
+    /**
+     * Gets the features that are adjacent to the given feature.
+     * @param featureIndex The feature. Features are zero-indexed.
+     * @return The features that are adjacent to the given feature. Features are zero-indexed.
+     */
+    public int[] getAdjacentFeatures(int featureIndex)
+    {
+        List<Integer> adjacencies = new ArrayList<Integer>();
+
+        Geometry source = geometries.get(featureIndex);
+
+        for (int i = 0; i < geometries.size(); i++)
+        {
+            Geometry target = geometries.get(i);
+
+            if (source.relate(target).isTouches(source.getDimension(), target.getDimension()))
+            {
+                adjacencies.add(i);
+
+                System.out.println(target.getGeometryType());
+            }
+        }
+
+        return toArray(adjacencies);
+    }
+
+    private int[] toArray(List<Integer> list)
+    {
+        int[] array = new int[list.size()];
+
+        for (int i = 0; i < list.size(); i++)
+        {
+            array[i] = list.get(i);
+        }
+
+        return array;
+    }
+
     /**
      * Gets the geometry of the feature with the given index. Features are zero-indexed.
      * @param featureIndex The index of the feature. Features are zero-indexed.
