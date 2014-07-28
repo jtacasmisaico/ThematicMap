@@ -490,8 +490,6 @@ public class ThematicMap
             if (source.relate(target).isTouches(source.getDimension(), target.getDimension()))
             {
                 adjacencies.add(i);
-
-                System.out.println(target.getGeometryType());
             }
         }
 
