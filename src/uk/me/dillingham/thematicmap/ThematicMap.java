@@ -487,7 +487,7 @@ public class ThematicMap
         {
             Geometry target = geometries.get(i);
 
-            if (source.relate(target).isTouches(source.getDimension(), target.getDimension()))
+            if (source != target && source.intersects(target))
             {
                 adjacencies.add(i);
             }
