@@ -526,4 +526,21 @@ public class ThematicMap
     {
         return geometries;
     }
+
+    /**
+     * Checks the validity of the geometries contained within the thematic map.
+     */
+    public void checkValidity()
+    {
+        for (int i = 0; i < geometries.size(); i++)
+        {
+            Geometry geometry = geometries.get(i);
+
+            String isValid = geometry.isValid() ? "valid" : "invalid";
+
+            String message = "Feature " + i + " (" + geometry.getGeometryType() + ") is " + isValid;
+
+            System.out.println(message);
+        }
+    }
 }
