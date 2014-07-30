@@ -12,6 +12,7 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PVector;
 import processing.data.Table;
+import processing.data.TableRow;
 import uk.me.dillingham.thematicmap.io.ShpFile;
 
 import com.vividsolutions.jts.awt.ShapeWriter;
@@ -395,6 +396,15 @@ public class ThematicMap
     public Table getAttributeTable()
     {
         return attributeTable;
+    }
+
+    /**
+     * Sets the attribute table to the given attribute table.
+     * @param attributeTable The attribute table.
+     */
+    public void setAttributeTable(Table attributeTable)
+    {
+        this.attributeTable = attributeTable;
     }
 
     /**
