@@ -455,6 +455,18 @@ public class ThematicMap
     }
 
     /**
+     * Gets the centroid of the feature with the given index.
+     * @param featureIndex The index of the feature.
+     * @return The centroid of the feature.
+     */
+    public Point2D getCentroid(int featureIndex)
+    {
+        Point point = geometries.get(featureIndex).getCentroid();
+
+        return new Point2D.Double(point.getX(), point.getY());
+    }
+
+    /**
      * Gets the centroids of the features contained within the thematic map.
      * @return The centroids of the features contained within the thematic map.
      */
